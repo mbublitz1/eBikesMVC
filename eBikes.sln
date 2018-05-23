@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBikes", "eBikes\eBikes.csproj", "{E468186F-0131-4A63-A3B7-FEEC57D1AAFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBikes.Tests", "eBikes.Tests\eBikes.Tests.csproj", "{B0446B93-4C6F-464A-ABC4-01D76F8F56C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBike.DTO", "eBike.DTO\eBike.DTO.csproj", "{5494B45E-7939-4C74-9168-2C41E543C9CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E468186F-0131-4A63-A3B7-FEEC57D1AAFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E468186F-0131-4A63-A3B7-FEEC57D1AAFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E468186F-0131-4A63-A3B7-FEEC57D1AAFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E468186F-0131-4A63-A3B7-FEEC57D1AAFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0446B93-4C6F-464A-ABC4-01D76F8F56C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0446B93-4C6F-464A-ABC4-01D76F8F56C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0446B93-4C6F-464A-ABC4-01D76F8F56C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0446B93-4C6F-464A-ABC4-01D76F8F56C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5494B45E-7939-4C74-9168-2C41E543C9CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5494B45E-7939-4C74-9168-2C41E543C9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5494B45E-7939-4C74-9168-2C41E543C9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5494B45E-7939-4C74-9168-2C41E543C9CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

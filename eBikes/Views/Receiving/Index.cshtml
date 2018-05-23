@@ -1,0 +1,76 @@
+﻿@model eBikes.ViewModel.ReceivngFormViewModel
+
+@{
+    ViewBag.Title = "Receiving";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <p style="float: right; padding-top: 2rem;">User:</p>
+</div>
+<div class="jumbotron">
+    <h1>Receiving</h1>
+</div>
+<h2>Receiving</h2>
+
+<div>
+    <table id="OrderList" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Order</th>
+                <th>Order Date</th>
+                <th>Vendor</th>
+                <th>Contact</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var osOrder in Model.OutstandingOrders)
+            {
+                <tr>
+                    <td> @osOrder.PurchaseOrderNumber</td>
+                    <td>@string.Format("{0:MM/dd/yyyy}", osOrder.OrderDate)</td>
+                    <td>@osOrder.Vendor.VendorName</td>
+                    <td>@osOrder.Vendor.Phone</td>
+                    <td><a class="viewOrder" href="#" data-ponumber=@osOrder.PurchaseOrderNumber>View Order</a></td>
+                    @*<td>@Html.ActionLink("View Order", "Details", "Receiving", new { id = osOrder.PurchaseOrderNumber }, null)</td>*@
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <!--Nav tabs-->
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#receiving" data-toggle="tab">Receiving</a></li>
+            <li><a href="#unordered" data-toggle="tab">Unordered</a></li>
+        </ul>
+        @*Tab panes one for each tab*@
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="receiving">
+                <div class="row form-inline col-md-12 details js-Order invisible">
+                    @Html.Partial("_OrderDetails", Model)
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="unordered">
+                @Html.Partial("_UnorderedParts", Model)
+                <div class="col=md-12">
+                    @Html.Partial("_UnorderedPartsDetail", Model)
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12" style="padding-top: 1rem">
+            <button id="indexReceiveBtn" class="btn btn-primary disabled" disabled>Receive</button>
+            <button id="forceCloserBtn" class="btn btn-primary disabled" disabled>Force Closer</button>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/projscript")
+    @Scripts.Render("~/bundles/jqueryval")
+}

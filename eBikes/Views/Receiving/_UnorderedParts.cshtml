@@ -1,0 +1,37 @@
+﻿@model eBikes.ViewModel.ReceivngFormViewModel
+@using (Html.BeginForm())
+{
+    <div id="PartEntry">
+        <div class="form-group js-Order" style="padding-bottom: 2rem; padding-top: 2rem;">
+            @Html.ValidationSummary(true, "Please fix the following errors")
+            <ul class="list-inline">
+                <li>
+                    @Html.LabelFor(u => u.UnorderedPart.Description)
+                </li>
+                <li>
+                    @Html.TextBoxFor(u => u.UnorderedPart.Description, new { @class = "form-control js-desc" })
+                    @Html.ValidationMessageFor(u => u.UnorderedPart.Description)
+                </li>
+                <li>
+                    @Html.LabelFor(u => u.UnorderedPart.VendorPartNumber)
+                </li>
+                <li>
+                    @Html.TextBoxFor(u => u.UnorderedPart.VendorPartNumber, new { @class = "form-control js-vendorpart" })
+                    @Html.ValidationMessageFor(u => u.UnorderedPart.VendorPartNumber)
+                </li>
+                <li>
+                    @Html.LabelFor(u => u.UnorderedPart.Quantity)
+                </li>
+                <li>
+                    @Html.TextBoxFor(u => u.UnorderedPart.Quantity, new { @class = "form-control js-qty" })
+                    @Html.ValidationMessageFor(u => u.UnorderedPart.Quantity)
+                </li>
+                <li>
+                    <a class="insertUnorderedPart" href="#">Insert</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+}
+
+

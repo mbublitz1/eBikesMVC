@@ -1,0 +1,65 @@
+﻿@model eBikes.ViewModel.ReceivngFormViewModel
+@using (Ajax.BeginForm("Receive", "Receiving", new AjaxOptions { UpdateTargetId = "OrderDetails" }))
+{
+    <div id="OrderDetails">
+        <div class="form-group" style="padding-bottom: 2rem; padding-top: 2rem;">
+            <ul class="orderInfo">
+                <li>
+                    @Html.LabelFor(p => p.PO)
+                    @Html.DisplayFor(p => p.PO)
+                </li>
+
+                <li>
+                    @Html.LabelFor(v => v.Vendor)
+                    @Html.DisplayFor(v => v.Vendor)
+                </li>
+                <li>
+
+                    @Html.LabelFor(c => c.Contact)
+                    @Html.DisplayFor(c => c.Contact)
+                </li>
+            </ul>
+        </div>
+        <div>
+
+            <table id="OrderDetail" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Part No</th>
+                    <th>Description</th>
+                    <th>Ordered</th>
+                    <th>Outstanding</th>
+                    <th>Receiving</th>
+                    <th>Returning</th>
+                    <th>Reason</th>
+                </tr>
+                </thead>
+                <tbody>
+                @{
+                    for (int i = 0; i < Model.ReceivedOrderDetails.Count(); i++)
+                    {
+
+                        <tr>
+                            <td>@Html.DisplayFor(r => r.ReceivedOrderDetails[i].PartId, new { @class = "form-control" })</td>
+                            <td>@Html.DisplayFor(r => r.ReceivedOrderDetails[i].PartDescription, new { @class = "form-control" })</td>
+                            <td>@Html.DisplayFor(r => r.ReceivedOrderDetails[i].QtyOnOrder, new { @class = "form-control" })</td>
+                            <td>@Html.DisplayFor(r => r.ReceivedOrderDetails[i].QtyOutstanding, new { @class = "form-control" })</td>
+                            <td>@Html.TextBoxFor(r => r.ReceivedOrderDetails[i].Received, new { @class = "form-control" }) </td>
+                            <td>@Html.TextBoxFor(r => r.ReceivedOrderDetails[i].Returning, new { @class = "form-control" }) </td>
+                            <td>@Html.TextBoxFor(r => r.ReceivedOrderDetails[i].Reason, new { @class = "form-control" }) </td>
+                        </tr>
+                        @Html.HiddenFor(r => r.ReceivedOrderDetails[i].PartId)
+                        @Html.HiddenFor(r => r.ReceivedOrderDetails[i].PartDescription)
+                        @Html.HiddenFor(r => r.ReceivedOrderDetails[i].QtyOnOrder)
+                        @Html.HiddenFor(r => r.ReceivedOrderDetails[i].QtyOutstanding)
+                        @Html.HiddenFor(r => r.ReceivedOrderDetails[i].PurchaseOrderId)
+                        @Html.HiddenFor(r => r.ReceivedOrderDetails[i].PurchaseOrderDetailId)
+                    }
+                }
+                </tbody>
+            </table>
+            @Html.HiddenFor(r => r.PO)
+            <button id="frmReceiveBtn" type="submit" class="btn btn-primary hidden">Receive</button>
+        </div>
+    </div>
+                        }
