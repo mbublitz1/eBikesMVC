@@ -53,33 +53,33 @@
                 datatype: "json",
                 success:
                     function (data) {
-                        $("#UnorderedDetail").html(data);
+                        //$("#UnorderedDetail").html(data);
                         var orderButton = $(".js-Order");
                         orderButton.removeClass("invisible");
                         description.val("");
                         vendorPart.val("");
                         quantity.val("");
-                        //$("#UnorderedDetail").DataTable({
-                        //    "searching": false,
-                        //    "ordering": false,
-                        //    "lengthChange": false,
-                        //    ajax: {
-                        //        url: "/RecevingController/GetUnorderedParts",
-                        //        datasrc: ""
-                        //    },
-                        //    columns: [
-                        //        {
-                        //            data: "Description"
-                        //        },
-                        //        {
-                        //            data: "VendorPartNumber",
-                        //            title: "Vendor Part Number"
-                        //        },
-                        //        {
-                        //            data: "Quantity"
-                        //        }
-                        //    ]
-                        //});
+                        $("#UnorderedDetail").DataTable({
+                            "searching": false,
+                            "ordering": false,
+                            "lengthChange": false,
+                            ajax: {
+                                url: "/RecevingController/GetUnorderedParts",
+                                datasrc: ""
+                            },
+                            columns: [
+                                {
+                                    data: "Description"
+                                },
+                                {
+                                    data: "VendorPartNumber",
+                                    title: "Vendor Part Number"
+                                },
+                                {
+                                    data: "Quantity"
+                                }
+                            ]
+                        });
                     }
             });
             e.preventDefault();

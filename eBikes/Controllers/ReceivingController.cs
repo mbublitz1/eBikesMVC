@@ -105,7 +105,8 @@ namespace eBikes.Controllers
                     .Where(u => u.PurchaseOrderNumber.Equals(id)).ToList(),
             };
 
-            return PartialView("_UnorderedPartsDetail", viewModel);
+            return Json(new {UnorderedPurchaseItemCart = viewModel.UnorderedParts}, JsonRequestBehavior.AllowGet);
+            //return PartialView("_UnorderedPartsDetail", viewModel);
         }
         [HttpPost]
         public ActionResult Delete(int cartId, int poNumber )
