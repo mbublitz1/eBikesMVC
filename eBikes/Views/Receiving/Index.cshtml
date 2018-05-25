@@ -72,10 +72,10 @@
 @section scripts
 {
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             $(".viewOrder").on("click",
-                function (e) {
+                function(e) {
                     var button = $(this);
                     $("#indexReceiveBtn").removeAttr('disabled');
                     $.ajax({
@@ -83,7 +83,7 @@
                         url: "/Receiving/Details",
                         datatype: "html",
                         data: { "id": button.attr("data-ponumber") },
-                        success: function (data) {
+                        success: function(data) {
                             $(".details").html(data);
                             var orderButton = $(".js-Order");
                             orderButton.removeClass("invisible");
@@ -92,25 +92,28 @@
                                 url: "/Receiving/GetUnorderedParts",
                                 datatype: "html",
                                 data: { "id": button.attr("data-ponumber") },
-                                success: function (data) {
-                                    //$("#UnorderedDetail").html(data);
+                                success: function(data) {
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
                                     $("#UnorderedDetail").DataTable({
+                                        "destroy": true,
                                         "searching": false,
                                         "ordering": false,
                                         "lengthChange": false,
+                                        "pagingType": "full_numbers",
+                                        "paging": true,
+                                        "lengthMenu": [10, 25, 50, 75, 100],
                                         ajax: {
-                                            url: "/RecevingController/GetUnorderedParts",
-                                            datasrc: ""
+                                            url: "/Receiving/GetUnorderedParts",
+                                            data: { "id": button.attr("data-ponumber") },
+                                            datasrc: data
                                         },
                                         columns: [
                                             {
                                                 data: "Description"
                                             },
                                             {
-                                                data: "VendorPartNumber",
-                                                title: "Vendor Part Number"
+                                                data: "VendorPartNumber"
                                             },
                                             {
                                                 data: "Quantity"
@@ -128,7 +131,7 @@
 
 
             $(".insertUnorderedPart").on("click",
-                function (e) {
+                function(e) {
                     var poNumber = $(".viewOrder").data("ponumber");
                     var description = $(".js-desc");
                     var vendorPart = $('.js-vendorpart');
@@ -147,7 +150,7 @@
                         contentType: "application/json; charset=utf-8",
                         datatype: "json",
                         success:
-                            function (data) {
+                            function(data) {
                                 //$("#UnorderedDetail").html(data);
                                 var orderButton = $(".js-Order");
                                 orderButton.removeClass("invisible");
@@ -155,20 +158,24 @@
                                 vendorPart.val("");
                                 quantity.val("");
                                 $("#UnorderedDetail").DataTable({
+                                    "destroy": true,
                                     "searching": false,
                                     "ordering": false,
                                     "lengthChange": false,
+                                    "pagingType": "full_numbers",
+                                    "paging": true,
+                                    "lengthMenu": [10, 25, 50, 75, 100],
                                     ajax: {
-                                        url: "/RecevingController/GetUnorderedParts",
-                                        datasrc: ""
+                                        url: "/Receiving/GetUnorderedParts",
+                                        data: { "id": button.attr("data-ponumber") },
+                                        datasrc: data
                                     },
                                     columns: [
                                         {
                                             data: "Description"
                                         },
                                         {
-                                            data: "VendorPartNumber",
-                                            title: "Vendor Part Number"
+                                            data: "VendorPartNumber"
                                         },
                                         {
                                             data: "Quantity"
@@ -182,7 +189,7 @@
 
             $("#UnorderedDetail").on("click",
                 ".js-delete",
-                function (e) {
+                function(e) {
                     var cartid = $(this).data('cart');
                     var po = $(this).data('ponumber');
                     $.ajax({
@@ -193,7 +200,7 @@
                             "cartId": cartid,
                             "poNumber": po
                         },
-                        success: function (data) {
+                        success: function(data) {
                             $("#UnorderedDetail").html(data);
                             var orderButton = $(".js-Order");
                             orderButton.removeClass("invisible");
@@ -203,7 +210,7 @@
                     e.preventDefault();
                 });
 
-            $('#indexReceiveBtn').click(function () {
+            $('#indexReceiveBtn').click(function() {
                 $("#frmReceiveBtn").trigger('click');
                 return false;
             });

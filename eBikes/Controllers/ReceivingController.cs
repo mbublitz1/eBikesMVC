@@ -105,9 +105,11 @@ namespace eBikes.Controllers
                     .Where(u => u.PurchaseOrderNumber.Equals(id)).ToList(),
             };
 
-            return Json(new {UnorderedPurchaseItemCart = viewModel.UnorderedParts}, JsonRequestBehavior.AllowGet);
+            //Make sure variable name matches the variable used in the success function of Ajax
+            return Json(new { data = viewModel.UnorderedParts}, JsonRequestBehavior.AllowGet);
             //return PartialView("_UnorderedPartsDetail", viewModel);
         }
+
         [HttpPost]
         public ActionResult Delete(int cartId, int poNumber )
         {

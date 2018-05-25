@@ -1,26 +1,15 @@
 ﻿@model eBikes.ViewModel.ReceivngFormViewModel
 
-<div id="UnorderedDetail" class="row form-inline col-md-8 js-Order">
-    <table class="table table-bordered table-hover table-condensed">
-        <thead>
-            <tr>
-                <th>Description</th>
-                <th>Vendor Part Number</th>
-                <th>Quantity</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var detail in Model.UnorderedParts)
-            {
-                <tr>
-                    <td>@detail.Description</td>
-                    <td>@detail.VendorPartNumber</td>
-                    <td>@detail.Quantity</td>
-                    <td><a class="js-delete" href="#" data-cart=@detail.CartID data-ponumber=@detail.PurchaseOrderNumber>Delete</a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+<table id="UnorderedDetail" width="50%" class="table table-bordered table-hover table-condensed">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Vendor Part Number</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
 
