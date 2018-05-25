@@ -44,44 +44,47 @@
             formdata.Description = description.val();
             formdata.VendorPartNumber = vendorPart.val();
             formdata.Quantity = quantity.val();
-
-            $.ajax({
-                url: "/Receiving/CreateUnorderedPart/",
-                type: "POST",
-                data: '{unorderedPart: ' + JSON.stringify(formdata) + '}',
-                contentType: "application/json; charset=utf-8",
-                datatype: "json",
-                success:
-                    function (data) {
-                        //$("#UnorderedDetail").html(data);
-                        var orderButton = $(".js-Order");
-                        orderButton.removeClass("invisible");
-                        description.val("");
-                        vendorPart.val("");
-                        quantity.val("");
-                        $("#UnorderedDetail").DataTable({
-                            "searching": false,
-                            "ordering": false,
-                            "lengthChange": false,
-                            ajax: {
-                                url: "/RecevingController/GetUnorderedParts",
-                                datasrc: ""
-                            },
-                            columns: [
-                                {
-                                    data: "Description"
+            $.validator.unobtrusive.parse($form);
+            $form.validate();
+            if ($form.valid()) {
+                $.ajax({
+                    url: "/Receiving/CreateUnorderedPart/",
+                    type: "POST",
+                    data: '{unorderedPart: ' + JSON.stringify(formdata) + '}',
+                    contentType: "application/json; charset=utf-8",
+                    datatype: "json",
+                    success:
+                        function(data) {
+                            //$("#UnorderedDetail").html(data);
+                            var orderButton = $(".js-Order");
+                            orderButton.removeClass("invisible");
+                            description.val("");
+                            vendorPart.val("");
+                            quantity.val("");
+                            $("#UnorderedDetail").DataTable({
+                                "searching": false,
+                                "ordering": false,
+                                "lengthChange": false,
+                                ajax: {
+                                    url: "/RecevingController/GetUnorderedParts",
+                                    datasrc: ""
                                 },
-                                {
-                                    data: "VendorPartNumber",
-                                    title: "Vendor Part Number"
-                                },
-                                {
-                                    data: "Quantity"
-                                }
-                            ]
-                        });
-                    }
-            });
+                                columns: [
+                                    {
+                                        data: "Description"
+                                    },
+                                    {
+                                        data: "VendorPartNumber",
+                                        title: "Vendor Part Number"
+                                    },
+                                    {
+                                        data: "Quantity"
+                                    }
+                                ]
+                            });
+                        }
+                });
+            }
             e.preventDefault();
         });
 

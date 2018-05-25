@@ -1,5 +1,5 @@
 ﻿@model eBikes.ViewModel.ReceivngFormViewModel
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "unorderedForm"}))
 {
     <div id="PartEntry">
         <div class="form-group js-Order" style="padding-bottom: 2rem; padding-top: 2rem;">
