@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+    var tbl;
     $(".viewOrder").on("click",
         function (e) {
             var button = $(this);
@@ -19,9 +19,41 @@
                         datatype: "html",
                         data: { "id": button.attr("data-ponumber") },
                         success: function (data) {
-                            $("#UnorderedDetail").html(data);
                             var orderButton = $(".js-Order");
                             orderButton.removeClass("invisible");
+                            tbl = $("#UnorderedDetail").DataTable({
+                                "destroy": true,
+                                "searching": false,
+                                "ordering": false,
+                                "lengthChange": false,
+                                "pagingType": "full_numbers",
+                                "paging": true,
+                                "lengthMenu": [10, 25, 50, 75, 100],
+                                ajax: {
+                                    url: "/Receiving/GetUnorderedParts",
+                                    data: { "id": button.attr("data-ponumber") },
+                                    datasrc: ""
+                                },
+                                columns: [
+                                    {
+                                        data: "Description"
+                                    },
+                                    {
+                                        data: "VendorPartNumber"
+                                    },
+                                    {
+                                        data: "Quantity"
+                                    },
+                                    {
+                                        data: "CartID",
+                                        render: function (data) {
+                                            return "<button class='btn btn-link js-delete' data-cart-id=" +
+                                                data +
+                                                ">Delete</button>";
+                                        }
+                                    }
+                                ]
+                            });
 
                         }
                     });
@@ -44,9 +76,11 @@
             formdata.Description = description.val();
             formdata.VendorPartNumber = vendorPart.val();
             formdata.Quantity = quantity.val();
-            $.validator.unobtrusive.parse($form);
-            $form.validate();
-            if ($form.valid()) {
+
+            var form = $('#unorderedForm');
+            $.validator.unobtrusive.parse(form);
+            form.validate();
+            if (form.valid()) {
                 $.ajax({
                     url: "/Receiving/CreateUnorderedPart/",
                     type: "POST",
@@ -54,31 +88,42 @@
                     contentType: "application/json; charset=utf-8",
                     datatype: "json",
                     success:
-                        function(data) {
-                            //$("#UnorderedDetail").html(data);
+                        function (data) {
                             var orderButton = $(".js-Order");
                             orderButton.removeClass("invisible");
                             description.val("");
                             vendorPart.val("");
                             quantity.val("");
-                            $("#UnorderedDetail").DataTable({
+                            tbl({
+                                "destroy": true,
                                 "searching": false,
                                 "ordering": false,
                                 "lengthChange": false,
+                                "pagingType": "full_numbers",
+                                "paging": true,
+                                "lengthMenu": [10, 25, 50, 75, 100],
                                 ajax: {
-                                    url: "/RecevingController/GetUnorderedParts",
+                                    url: "/Receiving/GetUnorderedParts",
+                                    data: { "id": button.attr("data-ponumber") },
                                     datasrc: ""
+
                                 },
                                 columns: [
                                     {
                                         data: "Description"
                                     },
                                     {
-                                        data: "VendorPartNumber",
-                                        title: "Vendor Part Number"
+                                        data: "VendorPartNumber"
                                     },
                                     {
                                         data: "Quantity"
+                                    },
+                                    {
+                                        data: "CartID",
+                                        render: function (data) {
+                                            return "<button class='btn btn-link js-delete' data-cart-id=" +
+                                                data + ">Delete</button>";
+                                        }
                                     }
                                 ]
                             });
@@ -91,21 +136,20 @@
     $("#UnorderedDetail").on("click",
         ".js-delete",
         function (e) {
-            var cartid = $(this).data('cart');
-            var po = $(this).data('ponumber');
+            var button = $(this);
+            var po = $(".viewOrder").data("ponumber");
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Delete", "Receiving")',
                 datatype: "html",
                 data: {
-                    "cartId": cartid,
+                    "cartId": button.attr("data-cart-id"),
                     "poNumber": po
                 },
-                success: function (data) {
-                    $("#UnorderedDetail").html(data);
+                success: function () {
+                    tbl.row(button.parents("tr")).remove().draw();
                     var orderButton = $(".js-Order");
                     orderButton.removeClass("invisible");
-
                 }
             });
             e.preventDefault();

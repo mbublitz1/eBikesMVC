@@ -73,7 +73,7 @@
 {
     <script>
         $(document).ready(function() {
-
+            var tbl;
             $(".viewOrder").on("click",
                 function(e) {
                     var button = $(this);
@@ -95,7 +95,7 @@
                                 success: function(data) {
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
-                                    $("#UnorderedDetail").DataTable({
+                                    tbl = $("#UnorderedDetail").DataTable({
                                         "destroy": true,
                                         "searching": false,
                                         "ordering": false,
@@ -168,7 +168,7 @@
                                     description.val("");
                                     vendorPart.val("");
                                     quantity.val("");
-                                    $("#UnorderedDetail").DataTable({
+                                    tbl({
                                         "destroy": true,
                                         "searching": false,
                                         "ordering": false,
@@ -196,8 +196,7 @@
                                                 data: "CartID",
                                                 render: function(data) {
                                                     return "<button class='btn btn-link js-delete' data-cart-id=" +
-                                                        data +
-                                                        ">Delete</button>";
+                                                        data + ">Delete</button>";
                                                 }
                                             }
                                         ]
@@ -210,22 +209,21 @@
 
             $("#UnorderedDetail").on("click",
                 ".js-delete",
-                function(e) {
-                    var cartid = $(this).data('cart');
-                    var po = $(this).data('ponumber');
+                function (e) {
+                    var button = $(this);
+                    var po = $(".viewOrder").data("ponumber");
                     $.ajax({
                         type: "POST",
                         url: '@Url.Action("Delete", "Receiving")',
                         datatype: "html",
                         data: {
-                            "cartId": cartid,
+                            "cartId": button.attr("data-cart-id"),
                             "poNumber": po
                         },
-                        success: function(data) {
-                            $("#UnorderedDetail").html(data);
+                        success: function () {
+                            tbl.row(button.parents("tr")).remove().draw();
                             var orderButton = $(".js-Order");
                             orderButton.removeClass("invisible");
-
                         }
                     });
                     e.preventDefault();
