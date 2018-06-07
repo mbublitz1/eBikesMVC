@@ -63,8 +63,8 @@
             </div>
         </div>
         <div class="row col-md-12" style="padding-top: 1rem">
-            <button id="indexReceiveBtn" class="btn btn-primary disabled" disabled>Receive</button>
-            <button id="forceCloserBtn" class="btn btn-primary disabled" disabled>Force Closer</button>
+            <button id="indexReceiveBtn" class="btn btn-primary" disabled>Receive</button>
+            <button id="forceCloserBtn" class="btn btn-primary" disabled>Force Closer</button>
         </div>
     </div>
 </div>
@@ -78,6 +78,7 @@
                 function(e) {
                     var button = $(this);
                     $("#indexReceiveBtn").removeAttr('disabled');
+                    $("#forceCloserBtn").removeAttr('disabled');
                     $.ajax({
                         type: "POST",
                         url: "/Receiving/Details",
@@ -95,7 +96,7 @@
                                 success: function(data) {
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
-                                    tbl = $("#UnorderedDetail").DataTable({
+                                    $("#UnorderedDetail").DataTable({
                                         "destroy": true,
                                         "searching": false,
                                         "ordering": false,
@@ -151,10 +152,17 @@
                     formdata.VendorPartNumber = vendorPart.val();
                     formdata.Quantity = quantity.val();
 
-                    var form = $('#unorderedForm');
-                    $.validator.unobtrusive.parse(form);
-                    form.validate();
-                    if (form.valid()) {
+                    //if (!$('#unorderedForm').valid())
+                    //    return false;
+                    var uopForm = $('#unorderedForm');
+                    uopForm.validate({
+                        rules: {
+                            'UnorderedPart.Description': {
+                                required: true
+                            }
+                        }
+                    });
+                    if (uopForm.valid()) {
                         $.ajax({
                             url: "/Receiving/CreateUnorderedPart/",
                             type: "POST",
@@ -168,7 +176,7 @@
                                     description.val("");
                                     vendorPart.val("");
                                     quantity.val("");
-                                    tbl({
+                                    tbl = $("#UnorderedDetail").DataTable({
                                         "destroy": true,
                                         "searching": false,
                                         "ordering": false,
@@ -178,7 +186,7 @@
                                         "lengthMenu": [10, 25, 50, 75, 100],
                                         ajax: {
                                             url: "/Receiving/GetUnorderedParts",
-                                            data: { "id": button.attr("data-ponumber") },
+                                            data: { "id": poNumber },
                                             datasrc: ""
 
                                         },
@@ -196,7 +204,8 @@
                                                 data: "CartID",
                                                 render: function(data) {
                                                     return "<button class='btn btn-link js-delete' data-cart-id=" +
-                                                        data + ">Delete</button>";
+                                                        data +
+                                                        ">Delete</button>";
                                                 }
                                             }
                                         ]
@@ -209,7 +218,7 @@
 
             $("#UnorderedDetail").on("click",
                 ".js-delete",
-                function (e) {
+                function(e) {
                     var button = $(this);
                     var po = $(".viewOrder").data("ponumber");
                     $.ajax({
@@ -220,7 +229,7 @@
                             "cartId": button.attr("data-cart-id"),
                             "poNumber": po
                         },
-                        success: function () {
+                        success: function() {
                             tbl.row(button.parents("tr")).remove().draw();
                             var orderButton = $(".js-Order");
                             orderButton.removeClass("invisible");

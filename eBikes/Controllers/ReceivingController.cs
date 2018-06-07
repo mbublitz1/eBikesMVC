@@ -111,7 +111,7 @@ namespace eBikes.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(int cartId, int poNumber )
+        public void Delete(int cartId, int poNumber )
         {
             var unorderedPart = _context.UnorderedPurchaseItemCarts.Single(u => u.CartID == cartId);
 
@@ -121,12 +121,12 @@ namespace eBikes.Controllers
                 _context.SaveChanges();
             }
 
-            var viewModel = new ReceivngFormViewModel
-            {
-                UnorderedParts = _context.UnorderedPurchaseItemCarts.Where(u => u.PurchaseOrderNumber == poNumber)
-            };
+            //var viewModel = new ReceivngFormViewModel
+            //{
+            //    UnorderedParts = _context.UnorderedPurchaseItemCarts.Where(u => u.PurchaseOrderNumber == poNumber)
+            //};
 
-            return PartialView("_UnorderedPartsDetail", viewModel);
+            //return PartialView("_UnorderedPartsDetail", viewModel);
         }
         [HttpPost]
         public ActionResult Receive(ReceivngFormViewModel model)

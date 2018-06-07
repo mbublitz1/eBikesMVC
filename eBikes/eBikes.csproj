@@ -196,6 +196,10 @@
     <Compile Include="Migrations\201805180214455_AddRequiredtoPONumberInUnorderPurchaseItemCart.Designer.cs">
       <DependentUpon>201805180214455_AddRequiredtoPONumberInUnorderPurchaseItemCart.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805282029533_UnorderedPurchaseItemDescRequired.cs" />
+    <Compile Include="Migrations\201805282029533_UnorderedPurchaseItemDescRequired.Designer.cs">
+      <DependentUpon>201805282029533_UnorderedPurchaseItemDescRequired.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BLL\ReceivingOrderBLL.cs" />
@@ -548,6 +552,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805180214455_AddRequiredtoPONumberInUnorderPurchaseItemCart.resx">
       <DependentUpon>201805180214455_AddRequiredtoPONumberInUnorderPurchaseItemCart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805282029533_UnorderedPurchaseItemDescRequired.resx">
+      <DependentUpon>201805282029533_UnorderedPurchaseItemDescRequired.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

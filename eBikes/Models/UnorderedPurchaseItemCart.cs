@@ -14,11 +14,12 @@ namespace eBikes.Models
         [Required]
         public int PurchaseOrderNumber { get; set; }
 
-        [StringLength(100)]
+        [Required(ErrorMessage = "Description is required")]
+        [StringLength(100, ErrorMessage = "The description can only be 100 characters or less")]
         public string Description { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage = "Vendor Part Number is required")]
+        [StringLength(50, ErrorMessage = "The part number can only be 50 characters or less")]
         [Display(Name = "Vendor Part Number")]
         public string VendorPartNumber { get; set; }
 
