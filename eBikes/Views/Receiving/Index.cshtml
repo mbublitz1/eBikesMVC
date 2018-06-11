@@ -73,11 +73,11 @@
 {
     <script>
         $(document)
-            .ready(function () {
+            .ready(function() {
                 var tbl;
                 $(".viewOrder")
                     .on("click",
-                        function (e) {
+                        function(e) {
                             var button = $(this);
                             $("#indexReceiveBtn").removeAttr('disabled');
                             $("#forceCloserBtn").removeAttr('disabled');
@@ -86,7 +86,7 @@
                                 url: "/Receiving/Details",
                                 datatype: "html",
                                 data: { "id": button.attr("data-ponumber") },
-                                success: function (data) {
+                                success: function(data) {
                                     $(".details").html(data);
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
@@ -95,7 +95,7 @@
                                         url: "/Receiving/GetUnorderedParts",
                                         datatype: "html",
                                         data: { "id": button.attr("data-ponumber") },
-                                        success: function (data) {
+                                        success: function(data) {
                                             var orderButton = $(".js-Order");
                                             orderButton.removeClass("invisible");
                                             $("#UnorderedDetail")
@@ -124,7 +124,7 @@
                                                         },
                                                         {
                                                             data: "CartID",
-                                                            render: function (data) {
+                                                            render: function(data) {
                                                                 return "<button class='btn btn-link js-delete' data-cart-id=" +
                                                                     data +
                                                                     ">Delete</button>";
@@ -144,7 +144,7 @@
 
                 $(".insertUnorderedPart")
                     .on("click",
-                        function (e) {
+                        function(e) {
                             var poNumber = $(".viewOrder").data("ponumber");
                             var description = $(".js-desc");
                             var vendorPart = $('.js-vendorpart');
@@ -184,6 +184,17 @@
                                         required: "Vendor Part Number is required",
                                         maxlength: "Please do not exceed 50 characters"
                                     }
+                                },
+                                tooltip_options: {
+                                    'UnorderedPart.Description': {
+                                        placement: 'bottom'
+                                    },
+                                    'UnorderedPart.VendorPartNumber': {
+                                        placement: 'bottom'
+                                    },
+                                    'UnorderedPart.Quantity': {
+                                        placement: 'bottom'
+                                    }
                                 }
                             });
                             if (uopForm.valid()) {
@@ -194,7 +205,7 @@
                                     contentType: "application/json; charset=utf-8",
                                     datatype: "json",
                                     success:
-                                        function (data) {
+                                        function(data) {
                                             var orderButton = $(".js-Order");
                                             orderButton.removeClass("invisible");
                                             description.val("");
@@ -227,7 +238,7 @@
                                                         },
                                                         {
                                                             data: "CartID",
-                                                            render: function (data) {
+                                                            render: function(data) {
                                                                 return "<button class='btn btn-link js-delete' data-cart-id=" +
                                                                     data +
                                                                     ">Delete</button>";
@@ -244,7 +255,7 @@
                 $("#UnorderedDetail")
                     .on("click",
                         ".js-delete",
-                        function (e) {
+                        function(e) {
                             var button = $(this);
                             var po = $(".viewOrder").data("ponumber");
                             $.ajax({
@@ -255,7 +266,7 @@
                                     "cartId": button.attr("data-cart-id"),
                                     "poNumber": po
                                 },
-                                success: function () {
+                                success: function() {
                                     tbl.row(button.parents("tr")).remove().draw();
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
@@ -265,7 +276,7 @@
                         });
 
                 $('#indexReceiveBtn')
-                    .click(function () {
+                    .click(function() {
                         $("#frmReceiveBtn").trigger('click');
                         return false;
                     });
@@ -273,6 +284,6 @@
             });
     </script>
     @Scripts.Render("~/bundles/jqueryval")
-
+    <script src="~/Scripts/jquery-validate.bootstrap-tooltip.min.js"></script>
 }
 

@@ -32,3 +32,12 @@ textarea {
     display: inline;
     margin-right: 25px;
 }
+
+.tooltip-inner {
+    background-color:  #d9534f
+}
+
+.top-tooltip .tooltip-arrow {
+    border-top-color: #d9534f
+}
+
