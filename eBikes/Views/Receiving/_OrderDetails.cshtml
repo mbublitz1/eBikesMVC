@@ -44,9 +44,17 @@
                                 <td>@Html.DisplayFor(r => r.ReceivedOrderDetails[i].PartDescription, new { @class = "form-control" })</td>
                                 <td>@Html.DisplayFor(r => r.ReceivedOrderDetails[i].QtyOnOrder, new { @class = "form-control" })</td>
                                 <td>@Html.DisplayFor(r => r.ReceivedOrderDetails[i].QtyOutstanding, new { @class = "form-control" })</td>
-                                <td>@Html.TextBoxFor(r => r.ReceivedOrderDetails[i].Received, new { @class = "form-control" }) </td>
-                                <td>@Html.TextBoxFor(r => r.ReceivedOrderDetails[i].Returning, new { @class = "form-control" }) </td>
-                                <td>@Html.TextBoxFor(r => r.ReceivedOrderDetails[i].Reason, new { @class = "form-control" }) </td>
+                                <td>
+                                    @Html.TextBoxFor(r => r.ReceivedOrderDetails[i].Received, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(r => r.ReceivedOrderDetails[i].Received)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(r => r.ReceivedOrderDetails[i].Returning, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(r => r.ReceivedOrderDetails[i].Returning)
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(r => r.ReceivedOrderDetails[i].Reason, new { @class = "form-control" })
+                                </td>
                             </tr>
                             @Html.HiddenFor(r => r.ReceivedOrderDetails[i].PartId)
                             @Html.HiddenFor(r => r.ReceivedOrderDetails[i].PartDescription)
