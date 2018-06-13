@@ -1,0 +1,24 @@
+﻿@model eBikes.ViewModel.ReceivngFormViewModel
+
+@foreach (var item in Model.ReceivedOrderDetails)
+{
+    <tr>
+        <td>@Html.DisplayFor(r => item.PartId, new { @class = "form-control" })</td>
+        <td>@Html.DisplayFor(r => item.PartDescription, new { @class = "form-control" })</td>
+        <td>@Html.DisplayFor(r => item.QtyOnOrder, new { @class = "form-control" })</td>
+        <td>@Html.DisplayFor(r => item.QtyOutstanding, new { @class = "form-control" })</td>
+        <td>
+            @Html.EditorFor(r => item.Received, new { @class = "form-control" })
+            @Html.ValidationMessageFor(r => item.Received)
+        </td>
+        <td>
+            @Html.EditorFor(r => item.Returning, new { @class = "form-control" })
+            @Html.ValidationMessageFor(r => item.Returning)
+        </td>
+        <td>
+            @Html.EditorFor(r => item.Reason, new { @class = "form-control" })
+            @Html.ValidationMessageFor(r => item.Reason)
+        </td>
+        @Html.HiddenFor(r => item.PurchaseOrderId)
+    </tr>
+}

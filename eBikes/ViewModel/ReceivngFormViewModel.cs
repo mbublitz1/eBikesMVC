@@ -20,6 +20,10 @@ namespace eBikes.ViewModel
 
         public PurchaseOrder PurchaseOrder { get; set; }
 
+        public ReceivedOrderDetail item { get; set; }
+
+        public string MessageToClient { get; set; }
+
         public UnorderedParts Parts { get; set; }
 
         public UnorderedPurchaseItemCart UnorderedPart { get; set; }

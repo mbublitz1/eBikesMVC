@@ -8,6 +8,7 @@ using eBike.DTO.POCO;
 using eBike.System.BLL;
 using eBikes.Models;
 using eBikes.ViewModel;
+using Microsoft.Ajax.Utilities;
 
 namespace eBikes.Controllers
 {
@@ -45,33 +46,19 @@ namespace eBikes.Controllers
         //Details action gets specific outstanding order
         public ActionResult Details(int id)
         {
-            var purchaseOrder = _context.PurchaseOrders.Single(p => p.PurchaseOrderNumber == id);
-
-            var viewModel = new ReceivngFormViewModel
+            ReceivngFormViewModel viewModel = new ReceivngFormViewModel();
+            try
             {
-                PO = purchaseOrder.PurchaseOrderNumber,
-                Vendor = purchaseOrder.Vendor.VendorName,
-                Contact = purchaseOrder.Vendor.Phone,
-                //OutstandingOrders = _context.PurchaseOrders.Where(od =>
-                //    od.Closed == false && !String.IsNullOrEmpty(od.PurchaseOrderNumber.ToString()) &&
-                //    od.OrderDate != null).ToList(),
-                ReceivedOrderDetails = _context.PurchaseOrderDetails
-                .Where(pod => pod.PurchaseOrderID == purchaseOrder.PurchaseOrderID && (pod.Quantity - pod.ReceiveOrderDetails
-                .Sum(rod => rod.QuantityReceived)) != 0)
-                .Select(pod => new ReceivedOrderDetail
-                {
-                    PurchaseOrderId = pod.PurchaseOrderID,
-                    PurchaseOrderDetailId = pod.PurchaseOrderDetailID,
-                    PartId = pod.PartID,
-                    PartDescription = pod.Part.Description,
-                    QtyOnOrder = pod.Quantity,
-                    QtyOutstanding = pod.ReceiveOrderDetails.Select(rod => rod.QuantityReceived).Any() ?
-                        pod.Quantity - pod.ReceiveOrderDetails.Sum(rod => rod.QuantityReceived) : pod.Quantity
-                }).ToList()
-            };
-          
+                viewModel = GetOrderDetails(id);
+            }
+            catch (Exception e)
+            {
+                viewModel.MessageToClient = e.Message;
+            }
+
             return PartialView("_OrderDetails", viewModel);
         }
+
         [HttpPost]
 
         public ActionResult CreateUnorderedPart(ReceivngFormViewModel model)
@@ -94,16 +81,13 @@ namespace eBikes.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("GetUnorderedParts", new { id = model.UnorderedPart.PurchaseOrderNumber });
+            return Json(new { data = GetUnorderPartsList(model.UnorderedPart.PurchaseOrderNumber)}, JsonRequestBehavior.AllowGet);
+            //return RedirectToAction("GetUnorderedParts", new { id = model.UnorderedPart.PurchaseOrderNumber });
         }
 
         public ActionResult GetUnorderedParts(int id)
         {
-            var viewModel = new ReceivngFormViewModel()
-            {
-                UnorderedParts = _context.UnorderedPurchaseItemCarts
-                    .Where(u => u.PurchaseOrderNumber.Equals(id)).ToList(),
-            };
+            var viewModel = GetUnorderPartsList(id);
 
             //Make sure variable name matches the variable used in the success function of Ajax
             return Json(new { data = viewModel.UnorderedParts}, JsonRequestBehavior.AllowGet);
@@ -131,13 +115,68 @@ namespace eBikes.Controllers
         [HttpPost]
         public ActionResult Receive(ReceivngFormViewModel model)
         {
-            ReceivingOrderBLL sysmgr = new ReceivingOrderBLL();
-            int poId = model.ReceivedOrderDetails[0].PurchaseOrderId;
-            int poDetailId = model.ReceivedOrderDetails[0].PurchaseOrderDetailId;
+            try
+            {
+                ReceivingOrderBLL sysmgr = new ReceivingOrderBLL();
+                int poId = model.ReceivedOrderDetails[0].PurchaseOrderId;
+                int poDetailId = model.ReceivedOrderDetails[0].PurchaseOrderDetailId;
 
-            sysmgr.Add_ReceivedOrders(poId, poDetailId, model.ReceivedOrderDetails);
+                sysmgr.Add_ReceivedOrders(poId, poDetailId, model.ReceivedOrderDetails);
 
-            return RedirectToAction("Details", new { id = model.PO });
+
+                var viewModel = GetOrderDetails((int)model.PO);
+
+                return PartialView("_OrderDetails", viewModel);
+            }
+            catch (Exception e)
+            {
+                model.MessageToClient = e.Message;
+                return PartialView("_OrderDetails", model);
+            }
+            //return RedirectToAction("Details", new { id = model.PO });
+        }
+
+        private ReceivngFormViewModel GetUnorderPartsList(int? id)
+        {
+            if (!id.HasValue)
+            {
+                throw new Exception("PO number not avaialble");
+            }
+
+            ReceivngFormViewModel viewModel = new ReceivngFormViewModel()
+            {
+                UnorderedParts = _context.UnorderedPurchaseItemCarts
+                    .Where(u => u.PurchaseOrderNumber.Equals(id)).ToList(),
+            };
+
+            return viewModel;
+        }
+
+        private ReceivngFormViewModel GetOrderDetails(int id)
+        {
+            var purchaseOrder = _context.PurchaseOrders.Single(p => p.PurchaseOrderNumber == id);
+
+            ReceivngFormViewModel viewModel = new ReceivngFormViewModel
+            {
+                PO = purchaseOrder.PurchaseOrderNumber,
+                Vendor = purchaseOrder.Vendor.VendorName,
+                Contact = purchaseOrder.Vendor.Phone,
+                ReceivedOrderDetails = _context.PurchaseOrderDetails
+                    .Where(pod => pod.PurchaseOrderID == purchaseOrder.PurchaseOrderID && (pod.Quantity - pod.ReceiveOrderDetails
+                                                                                               .Sum(rod => rod.QuantityReceived)) != 0)
+                    .Select(pod => new ReceivedOrderDetail
+                    {
+                        PurchaseOrderId = pod.PurchaseOrderID,
+                        PurchaseOrderDetailId = pod.PurchaseOrderDetailID,
+                        PartId = pod.PartID,
+                        PartDescription = pod.Part.Description,
+                        QtyOnOrder = pod.Quantity,
+                        QtyOutstanding = pod.ReceiveOrderDetails.Select(rod => rod.QuantityReceived).Any() ?
+                            pod.Quantity - pod.ReceiveOrderDetails.Sum(rod => rod.QuantityReceived) : pod.Quantity
+                    }).ToList()
+            };
+
+            return viewModel;
         }
     }
 }
