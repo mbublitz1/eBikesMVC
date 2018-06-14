@@ -243,6 +243,7 @@
     <Compile Include="Models\Coupon.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\ErrHandling.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\JobDetail.cs" />
@@ -584,6 +585,7 @@
     <Content Include="Views\Receiving\_OrderDetails.cshtml" />
     <Content Include="Views\Receiving\_UnorderedParts.cshtml" />
     <Content Include="Views\Receiving\_UnorderedPartsDetail.cshtml" />
+    <Content Include="Views\Receiving\_Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
