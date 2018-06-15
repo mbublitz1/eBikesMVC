@@ -30,12 +30,18 @@ namespace eBikes.Controllers
         //{
         //    Exception ex = filterContext.Exception;
         //    filterContext.ExceptionHandled = true;
-        //    var model = new HandleErrorInfo(filterContext.Exception, "Controller", "Action");
+        //    var controllerName = (string)filterContext.RouteData.Values["controller"];
+        //    var actionName = (string)filterContext.RouteData.Values["action"];
+        //    var exp = new HandleErrorInfo(filterContext.Exception, controllerName, actionName);
 
-        //    filterContext.Result = new ViewResult
+        //    ReceivngFormViewModel viewModel = new ReceivngFormViewModel
         //    {
-        //        ViewName = "Error",
-        //        ViewData = new ViewDataDictionary(model)
+        //        ErrorMessage = exp.Exception.Message.ToString()
+        //    };
+        //    filterContext.Result = new PartialViewResult()
+        //    {
+        //        ViewName = "_Error",
+        //        ViewData = new ViewDataDictionary(viewModel)
         //    };
 
         //}
@@ -84,7 +90,7 @@ namespace eBikes.Controllers
                         pod.Quantity - pod.ReceiveOrderDetails.Sum(rod => rod.QuantityReceived) : pod.Quantity
                 }).ToList()
             };
-          
+
             return PartialView("_OrderDetails", viewModel);
         }
         [HttpPost]
@@ -121,12 +127,12 @@ namespace eBikes.Controllers
             };
 
             //Make sure variable name matches the variable used in the success function of Ajax
-            return Json(new { data = viewModel.UnorderedParts}, JsonRequestBehavior.AllowGet);
+            return Json(new { data = viewModel.UnorderedParts }, JsonRequestBehavior.AllowGet);
             //return PartialView("_UnorderedPartsDetail", viewModel);
         }
 
         [HttpPost]
-        public void Delete(int cartId, int poNumber )
+        public void Delete(int cartId, int poNumber)
         {
             var unorderedPart = _context.UnorderedPurchaseItemCarts.Single(u => u.CartID == cartId);
 
@@ -146,13 +152,21 @@ namespace eBikes.Controllers
         [HttpPost]
         public ActionResult Receive(ReceivngFormViewModel model)
         {
-            ReceivingOrderBLL sysmgr = new ReceivingOrderBLL();
-            int poId = model.ReceivedOrderDetails[0].PurchaseOrderId;
-            int poDetailId = model.ReceivedOrderDetails[0].PurchaseOrderDetailId;
 
-            sysmgr.Add_ReceivedOrders(poId, poDetailId, model.ReceivedOrderDetails);
+            try
+            {
+                ReceivingOrderBLL sysmgr = new ReceivingOrderBLL();
+                int poId = model.ReceivedOrderDetails[0].PurchaseOrderId;
+                int poDetailId = model.ReceivedOrderDetails[0].PurchaseOrderDetailId;
 
-            return RedirectToAction("Details", new { id = model.PO });
+                sysmgr.Add_ReceivedOrders(poId, poDetailId, model.ReceivedOrderDetails);
+                return RedirectToAction("Details", new { id = model.PO });
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", e.Message);
+                return PartialView("_OrderDetails", model);
+            }
         }
     }
 }

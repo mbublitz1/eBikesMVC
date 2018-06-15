@@ -18,6 +18,8 @@ namespace eBikes.ViewModel
         [Display(Name = "Contact: ")]
         public string Contact { get; set; }
 
+        public string ErrorMessage { get; set; }
+
         public PurchaseOrder PurchaseOrder { get; set; }
 
         public UnorderedParts Parts { get; set; }
