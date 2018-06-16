@@ -210,43 +210,9 @@
                                             description.val("");
                                             vendorPart.val("");
                                             quantity.val("");
-                                            tbl = $("#UnorderedDetail")
-                                                .DataTable({
-                                                    "destroy": true,
-                                                    "searching": false,
-                                                    "ordering": false,
-                                                    "lengthChange": false,
-                                                    "pagingType": "full_numbers",
-                                                    "paging": true,
-                                                    "lengthMenu": [10, 25, 50, 75, 100],
-                                                    ajax: {
-                                                        url: "/Receiving/GetUnorderedParts",
-                                                        data: { "id": poNumber },
-                                                        datasrc: ""
-
-                                                    },
-                                                    columns: [
-                                                        {
-                                                            data: "Description"
-                                                        },
-                                                        {
-                                                            data: "VendorPartNumber"
-                                                        },
-                                                        {
-                                                            data: "Quantity"
-                                                        },
-                                                        {
-                                                            data: "CartID",
-                                                            render: function (data) {
-                                                                return "<button class='btn btn-link js-delete' data-cart-id=" +
-                                                                    data +
-                                                                    ">Delete</button>";
-                                                            }
-                                                        }
-                                                    ]
-                                                });
-                                        }
-                                });
+                                            tbl.ajax.reload();
+                                        } //EOSuccess
+                                }); //EOAjax
                             }
                             e.preventDefault();
                         });
