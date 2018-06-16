@@ -97,7 +97,7 @@
                                         success: function (data) {
                                             var orderButton = $(".js-Order");
                                             orderButton.removeClass("invisible");
-                                            $("#UnorderedDetail")
+                                            tbl = $("#UnorderedDetail")
                                                 .DataTable({
                                                     "destroy": true,
                                                     "searching": false,
@@ -129,14 +129,14 @@
                                                                     ">Delete</button>";
                                                             }
                                                         }
-                                                    ]
-                                                });
+                                                    ] //EOColumns
+                                                }); //EODataTable
 
-                                        }
-                                    });
+                                        } //EOSuccess
+                                    }); //EOInnerAjax
 
-                                }
-                            });
+                                } //EOOuterSuccess
+                            }); //EOInitialAjax
                             e.preventDefault();
                         });
 
