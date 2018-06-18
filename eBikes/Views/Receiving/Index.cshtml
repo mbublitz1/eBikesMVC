@@ -12,6 +12,20 @@
     <h1>Receiving</h1>
 </div>
 <h2>Receiving</h2>
+<div class="row col-md-12">
+<h4>To navigate through this form and see how it function, please click the buttons in the sequence outlined.</h4>
+</div>
+<div class="row col-md-12">
+    <ul class="list-inline">
+        <li><button id="viewOrderAuto" class="btn btn-default btn-primary">1. View Order</button></li>
+        <li><button id="addRecItmAuto" class="btn btn-default disabled">2. Add Receive Items</button></li>
+        <li><button id="receiveAuto" class="btn btn-default disabled">3. Receive</button></li>
+        <li><button id="recValAuto" class="btn btn-default disabled">4. Receive Validation</button></li>
+        <li><button id="unorderTabAuto" class="btn btn-default disabled">5. Unordered Tab</button></li>
+        <li><button id="addUnorderedAuto" class="btn btn-default disabled">6. Add Unordered Item</button></li>
+        <li><button id="deleteUnorderAuto" class="btn btn-default disabled">7. Delete Item</button></li>
+    </ul>
+</div>
 <div>
     <table id="OrderList" class="table table-bordered table-hover">
         <thead>
@@ -55,8 +69,10 @@
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="unordered">
-                @Html.Partial("_UnorderedParts", Model)
-                <div class="col=md-12">
+                <div class="col-md-12 js-Order invisible">
+                    @Html.Partial("_UnorderedParts", Model)
+                </div>
+                <div class="col-md-12 js-Order invisible">
                     @Html.Partial("_UnorderedPartsDetail", Model)
                 </div>
             </div>
@@ -72,11 +88,11 @@
 {
     <script>
         $(document)
-            .ready(function () {
+            .ready(function() {
                 var tbl;
                 $(".viewOrder")
                     .on("click",
-                        function (e) {
+                        function(e) {
                             var button = $(this);
                             $("#indexReceiveBtn").removeAttr('disabled');
                             $("#forceCloserBtn").removeAttr('disabled');
@@ -85,7 +101,7 @@
                                 url: "/Receiving/Details",
                                 datatype: "html",
                                 data: { "id": button.attr("data-ponumber") },
-                                success: function (data) {
+                                success: function(data) {
                                     $(".details").html(data);
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
@@ -94,7 +110,7 @@
                                         url: "/Receiving/GetUnorderedParts",
                                         datatype: "html",
                                         data: { "id": button.attr("data-ponumber") },
-                                        success: function (data) {
+                                        success: function(data) {
                                             var orderButton = $(".js-Order");
                                             orderButton.removeClass("invisible");
                                             tbl = $("#UnorderedDetail")
@@ -111,6 +127,12 @@
                                                         data: { "id": button.attr("data-ponumber") },
                                                         datasrc: ""
                                                     },
+                                                    "columnDefs": [
+                                                        {
+                                                            targets: -1,
+                                                            className: 'dt-body-center'
+                                                        }
+                                                    ],
                                                     columns: [
                                                         {
                                                             data: "Description"
@@ -123,8 +145,8 @@
                                                         },
                                                         {
                                                             data: "CartID",
-                                                            render: function (data) {
-                                                                return "<button class='btn btn-link js-delete' data-cart-id=" +
+                                                            render: function(data) {
+                                                                return "<button class='btn btn-danger js-delete' data-cart-id=" +
                                                                     data +
                                                                     ">Delete</button>";
                                                             }
@@ -143,7 +165,7 @@
 
                 $(".insertUnorderedPart")
                     .on("click",
-                        function (e) {
+                        function(e) {
                             var poNumber = $(".viewOrder").data("ponumber");
                             var description = $(".js-desc");
                             var vendorPart = $('.js-vendorpart');
@@ -157,46 +179,46 @@
 
                             //if (!$('#unorderedForm').valid())
                             //    return false;
-                            var uopForm = $('#unorderedForm');
-                            uopForm.validate({
-                                rules: {
-                                    'UnorderedPart.Description': {
-                                        required: true,
-                                        maxlength: 100
+                            //var uopForm = $('#unorderedForm');
+                            //uopForm.validate({
+                            //    rules: {
+                            //        'UnorderedPart.Description': {
+                            //            required: true,
+                            //            maxlength: 100
 
-                                    },
-                                    'UnorderedPart.VendorPartNumber': {
-                                        required: true,
-                                        maxlength: 50
-                                    },
-                                    'UnorderedPart.Quantity': {
-                                        required: true,
-                                        digits: true
-                                    }
-                                },
-                                messages: {
-                                    'UnorderedPart.Description': {
-                                        required: "Description is required",
-                                        maxlength: "Please do not exceed 100 characters"
-                                    },
-                                    'UnorderedPart.VendorPartNumber': {
-                                        required: "Vendor Part Number is required",
-                                        maxlength: "Please do not exceed 50 characters"
-                                    }
-                                },
-                                tooltip_options: {
-                                    'UnorderedPart.Description': {
-                                        placement: 'bottom'
-                                    },
-                                    'UnorderedPart.VendorPartNumber': {
-                                        placement: 'bottom'
-                                    },
-                                    'UnorderedPart.Quantity': {
-                                        placement: 'bottom'
-                                    }
-                                }
-                            });
-                            if (uopForm.valid()) {
+                            //        },
+                            //        'UnorderedPart.VendorPartNumber': {
+                            //            required: true,
+                            //            maxlength: 50
+                            //        },
+                            //        'UnorderedPart.Quantity': {
+                            //            required: true,
+                            //            digits: true
+                            //        }
+                            //    },
+                            //    messages: {
+                            //        'UnorderedPart.Description': {
+                            //            required: "Description is required",
+                            //            maxlength: "Please do not exceed 100 characters"
+                            //        },
+                            //        'UnorderedPart.VendorPartNumber': {
+                            //            required: "Vendor Part Number is required",
+                            //            maxlength: "Please do not exceed 50 characters"
+                            //        }
+                            //    },
+                            //    tooltip_options: {
+                            //        'UnorderedPart.Description': {
+                            //            placement: 'bottom'
+                            //        },
+                            //        'UnorderedPart.VendorPartNumber': {
+                            //            placement: 'bottom'
+                            //        },
+                            //        'UnorderedPart.Quantity': {
+                            //            placement: 'bottom'
+                            //        }
+                            //    }
+                            //});
+                            if ($('#unorderedForm').valid()) {
                                 $.ajax({
                                     url: "/Receiving/CreateUnorderedPart/",
                                     type: "POST",
@@ -204,7 +226,7 @@
                                     contentType: "application/json; charset=utf-8",
                                     datatype: "json",
                                     success:
-                                        function (data) {
+                                        function(data) {
                                             var orderButton = $(".js-Order");
                                             orderButton.removeClass("invisible");
                                             description.val("");
@@ -220,7 +242,7 @@
                 $("#UnorderedDetail")
                     .on("click",
                         ".js-delete",
-                        function (e) {
+                        function(e) {
                             var button = $(this);
                             var po = $(".viewOrder").data("ponumber");
                             $.ajax({
@@ -231,7 +253,7 @@
                                     "cartId": button.attr("data-cart-id"),
                                     "poNumber": po
                                 },
-                                success: function () {
+                                success: function() {
                                     tbl.row(button.parents("tr")).remove().draw();
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
@@ -241,7 +263,7 @@
                         });
 
                 $('#indexReceiveBtn')
-                    .click(function () {
+                    .click(function() {
                         $.validator.unobtrusive.parse($("form"));
                         if (!$('#unorderedForm').valid())
                             return false;
@@ -249,7 +271,36 @@
                         return false;
                     });
 
+
+                $("#viewOrderAuto").click(function() {
+                    AutoRunthrough.viewOrder();
+                });
+
+                $("#addRecItmAuto").click(function() {
+                    AutoRunthrough.receiveItem();
+                });
             });
+
+        var AutoRunthrough = (function() {
+            return {
+                viewOrder: function () {
+                    $("#addRecItmAuto").removeClass("disabled");
+                    var btnRow = $("#OrderList tbody tr:first, td:nth-child(5) a");
+                    if (typeof btnRow != 'undefined')
+                        $("#OrderList tbody tr:first, td:nth-child(5) a").trigger('click');
+                },
+                receiveItem: function() {
+                    var receiving = $("#OrderDetail tbody tr:first td:nth-child(5) input");
+                    var returning = $("#OrderDetail tbody tr:first td:nth-child(6) input");
+                    var reason = $("#OrderDetail tbody tr:first td:nth-child(7) input");
+
+                    receiving.val(15);
+                    returning.val(20);
+                    reason.val("Defective parts");
+
+                }
+            }
+        })();
     </script>
     @Scripts.Render("~/bundles/jqueryval")
     <script src="~/Scripts/jquery-validate.bootstrap-tooltip.min.js"></script>
