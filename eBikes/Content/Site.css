@@ -41,3 +41,7 @@ textarea {
     border-top-color: #d9534f
 }
 
+.dataTables_paginate {
+   float: left !important;
+}
+

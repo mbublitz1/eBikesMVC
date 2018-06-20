@@ -13,7 +13,7 @@
 </div>
 <h2>Receiving</h2>
 <div class="row col-md-12">
-<h4>To navigate through this form and see how it function, please click the buttons in the sequence outlined.</h4>
+    <h4>To navigate through this form and see how it function, please click the buttons in the sequence outlined.</h4>
 </div>
 <div class="row col-md-12">
     <ul class="list-inline">
@@ -22,32 +22,33 @@
         <li><button id="receiveAuto" class="btn btn-default disabled">3. Receive</button></li>
         <li><button id="unorderTabAuto" class="btn btn-default disabled">5. Unordered Tab</button></li>
         <li><button id="addUnorderedAuto" class="btn btn-default disabled">6. Add Unordered Item</button></li>
-        <li><button id="deleteUnorderAuto" class="btn btn-default disabled">7. Delete Item</button></li>
+        <li><button id="insertUnorderedAuto" class="btn btn-default disabled">7. Insert Unordered Item</button></li>
+        <li><button id="deleteUnorderAuto" class="btn btn-default disabled">8. Delete Item</button></li>
     </ul>
 </div>
 <div>
     <table id="OrderList" class="table table-bordered table-hover">
         <thead>
-        <tr>
-            <th>Order</th>
-            <th>Order Date</th>
-            <th>Vendor</th>
-            <th>Contact</th>
-            <th></th>
-        </tr>
+            <tr>
+                <th>Order</th>
+                <th>Order Date</th>
+                <th>Vendor</th>
+                <th>Contact</th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var osOrder in Model.OutstandingOrders)
-        {
-            <tr>
-                <td> @osOrder.PurchaseOrderNumber</td>
-                <td>@string.Format("{0:MM/dd/yyyy}", osOrder.OrderDate)</td>
-                <td>@osOrder.Vendor.VendorName</td>
-                <td>@osOrder.Vendor.Phone</td>
-                <td><a class="viewOrder" href="#" data-ponumber=@osOrder.PurchaseOrderNumber>View Order</a></td>
-                @*<td>@Html.ActionLink("View Order", "Details", "Receiving", new { id = osOrder.PurchaseOrderNumber }, null)</td>*@
-            </tr>
-        }
+            @foreach (var osOrder in Model.OutstandingOrders)
+            {
+                <tr>
+                    <td> @osOrder.PurchaseOrderNumber</td>
+                    <td>@string.Format("{0:MM/dd/yyyy}", osOrder.OrderDate)</td>
+                    <td>@osOrder.Vendor.VendorName</td>
+                    <td>@osOrder.Vendor.Phone</td>
+                    <td><a class="viewOrder" href="#" data-ponumber=@osOrder.PurchaseOrderNumber>View Order</a></td>
+                    @*<td>@Html.ActionLink("View Order", "Details", "Receiving", new { id = osOrder.PurchaseOrderNumber }, null)</td>*@
+                </tr>
+            }
 
         </tbody>
     </table>
@@ -87,11 +88,11 @@
 {
     <script>
         $(document)
-            .ready(function() {
+            .ready(function () {
                 var tbl;
                 $(".viewOrder")
                     .on("click",
-                        function(e) {
+                        function (e) {
                             var button = $(this);
                             $("#indexReceiveBtn").removeAttr('disabled');
                             $("#forceCloserBtn").removeAttr('disabled');
@@ -100,7 +101,7 @@
                                 url: "/Receiving/Details",
                                 datatype: "html",
                                 data: { "id": button.attr("data-ponumber") },
-                                success: function(data) {
+                                success: function (data) {
                                     $(".details").html(data);
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
@@ -109,7 +110,7 @@
                                         url: "/Receiving/GetUnorderedParts",
                                         datatype: "html",
                                         data: { "id": button.attr("data-ponumber") },
-                                        success: function(data) {
+                                        success: function (data) {
                                             var orderButton = $(".js-Order");
                                             orderButton.removeClass("invisible");
                                             tbl = $("#UnorderedDetail")
@@ -144,7 +145,7 @@
                                                         },
                                                         {
                                                             data: "CartID",
-                                                            render: function(data) {
+                                                            render: function (data) {
                                                                 return "<button class='btn btn-danger js-delete' data-cart-id=" +
                                                                     data +
                                                                     ">Delete</button>";
@@ -164,7 +165,7 @@
 
                 $(".insertUnorderedPart")
                     .on("click",
-                        function(e) {
+                        function (e) {
                             var poNumber = $(".viewOrder").data("ponumber");
                             var description = $(".js-desc");
                             var vendorPart = $('.js-vendorpart');
@@ -178,45 +179,7 @@
 
                             //if (!$('#unorderedForm').valid())
                             //    return false;
-                            //var uopForm = $('#unorderedForm');
-                            //uopForm.validate({
-                            //    rules: {
-                            //        'UnorderedPart.Description': {
-                            //            required: true,
-                            //            maxlength: 100
 
-                            //        },
-                            //        'UnorderedPart.VendorPartNumber': {
-                            //            required: true,
-                            //            maxlength: 50
-                            //        },
-                            //        'UnorderedPart.Quantity': {
-                            //            required: true,
-                            //            digits: true
-                            //        }
-                            //    },
-                            //    messages: {
-                            //        'UnorderedPart.Description': {
-                            //            required: "Description is required",
-                            //            maxlength: "Please do not exceed 100 characters"
-                            //        },
-                            //        'UnorderedPart.VendorPartNumber': {
-                            //            required: "Vendor Part Number is required",
-                            //            maxlength: "Please do not exceed 50 characters"
-                            //        }
-                            //    },
-                            //    tooltip_options: {
-                            //        'UnorderedPart.Description': {
-                            //            placement: 'bottom'
-                            //        },
-                            //        'UnorderedPart.VendorPartNumber': {
-                            //            placement: 'bottom'
-                            //        },
-                            //        'UnorderedPart.Quantity': {
-                            //            placement: 'bottom'
-                            //        }
-                            //    }
-                            //});
                             if ($('#unorderedForm').valid()) {
                                 $.ajax({
                                     url: "/Receiving/CreateUnorderedPart/",
@@ -225,7 +188,7 @@
                                     contentType: "application/json; charset=utf-8",
                                     datatype: "json",
                                     success:
-                                        function(data) {
+                                        function (data) {
                                             var orderButton = $(".js-Order");
                                             orderButton.removeClass("invisible");
                                             description.val("");
@@ -241,7 +204,7 @@
                 $("#UnorderedDetail")
                     .on("click",
                         ".js-delete",
-                        function(e) {
+                        function (e) {
                             var button = $(this);
                             var po = $(".viewOrder").data("ponumber");
                             $.ajax({
@@ -252,7 +215,7 @@
                                     "cartId": button.attr("data-cart-id"),
                                     "poNumber": po
                                 },
-                                success: function() {
+                                success: function () {
                                     tbl.row(button.parents("tr")).remove().draw();
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
@@ -262,7 +225,7 @@
                         });
 
                 $('#indexReceiveBtn')
-                    .click(function() {
+                    .click(function () {
                         $.validator.unobtrusive.parse($("form"));
                         if (!$('#unorderedForm').valid())
                             return false;
@@ -270,32 +233,47 @@
                         return false;
                     });
 
+                $("#viewOrderAuto")
+                    .click(function () {
+                        AutoRunthrough.viewOrder();
+                    });
 
-                $("#viewOrderAuto").click(function() {
-                    AutoRunthrough.viewOrder();
-                });
+                $("#addRecItmAuto")
+                    .click(function () {
+                        AutoRunthrough.addReceiveData();
+                    });
 
-                $("#addRecItmAuto").click(function() {
-                    AutoRunthrough.addReceiveData();
-                });
-
-                $("#receiveAuto").click(function() {
-                    AutoRunthrough.receiveItem();
-                });
-                $("#unorderTabAuto").click(function() {
-                    AutoRunthrough.unorderedTab();
-                });
+                $("#receiveAuto")
+                    .click(function () {
+                        AutoRunthrough.receiveItem();
+                    });
+                $("#unorderTabAuto")
+                    .click(function () {
+                        AutoRunthrough.unorderedTab();
+                    });
+                $("#addUnorderedAuto")
+                    .click(function () {
+                        AutoRunthrough.addUnordered();
+                    });
+                $("#insertUnorderedAuto")
+                    .click(function () {
+                        AutoRunthrough.insertUOP();
+                    });
+                $("#deleteUnorderAuto")
+                    .click(function () {
+                        AutoRunthrough.deleteUOP();
+                    });
             });
 
-        var AutoRunthrough = (function() {
+        var AutoRunthrough = (function () {
             return {
-                viewOrder: function() {
+                viewOrder: function () {
                     $("#addRecItmAuto").removeClass("disabled");
                     var btnRow = $("#OrderList tbody tr:first, td:nth-child(5) a");
                     if (typeof btnRow != 'undefined')
                         $("#OrderList tbody tr:first, td:nth-child(5) a").trigger('click');
                 },
-                addReceiveData: function() {
+                addReceiveData: function () {
                     var receiving = $("#OrderDetail tbody tr:first td:nth-child(5) input");
                     var returning = $("#OrderDetail tbody tr:first td:nth-child(6) input");
                     var reason = $("#OrderDetail tbody tr:first td:nth-child(7) input");
@@ -305,16 +283,16 @@
                     reason.val("Defective parts");
                     $("#receiveAuto").removeClass("disabled");
                 },
-                receiveItem: function() {
+                receiveItem: function () {
                     $("#unorderTabAuto").removeClass("disabled");
                     $("#frmReceiveBtn").trigger('click');
                 },
-                unorderedTab: function() {
+                unorderedTab: function () {
                     $('.nav-tabs a[href="#unordered"]').tab('show');
                     $("#addUnorderedAuto").removeClass("disabled");
                 },
 
-                addUnordered: function() {
+                addUnordered: function () {
                     var description = $("#UnorderedPart_Description");
                     var partNumber = $("#UnorderedPart_VendorPartNumber");
                     var quanity = $("#UnorderedPart_Quantity");
@@ -323,11 +301,16 @@
                     partNumber.val("HS2341-P");
                     quanity.val(1);
 
-                    $("#deleteUnorderAuto").removeClass("disabled");
-
+                    $("#insertUnorderedAuto").removeClass("disabled");
                 },
-                deleteUOP: function() {
-
+                insertUOP: function () {
+                    $("#insertUOP").trigger("click");
+                    $("#deleteUnorderAuto").removeClass("disabled");
+                },
+                deleteUOP: function () {
+                    var btnRow = $("#UnorderedDetail tbody tr:first, td:nth-child(4) button");
+                    if (typeof btnRow != 'undefined')
+                        $("#UnorderedDetail tbody tr:first, td:nth-child(4) button").trigger('click');
                 }
             }
         })();
