@@ -73,9 +73,6 @@ namespace eBikes.Controllers
                 PO = purchaseOrder.PurchaseOrderNumber,
                 Vendor = purchaseOrder.Vendor.VendorName,
                 Contact = purchaseOrder.Vendor.Phone,
-                //OutstandingOrders = _context.PurchaseOrders.Where(od =>
-                //    od.Closed == false && !String.IsNullOrEmpty(od.PurchaseOrderNumber.ToString()) &&
-                //    od.OrderDate != null).ToList(),
                 ReceivedOrderDetails = _context.PurchaseOrderDetails
                 .Where(pod => pod.PurchaseOrderID == purchaseOrder.PurchaseOrderID && (pod.Quantity - pod.ReceiveOrderDetails
                 .Sum(rod => rod.QuantityReceived)) != 0)
@@ -128,7 +125,6 @@ namespace eBikes.Controllers
 
             //Make sure variable name matches the variable used in the success function of Ajax
             return Json(new { data = viewModel.UnorderedParts }, JsonRequestBehavior.AllowGet);
-            //return PartialView("_UnorderedPartsDetail", viewModel);
         }
 
         [HttpPost]
@@ -141,13 +137,6 @@ namespace eBikes.Controllers
                 _context.UnorderedPurchaseItemCarts.Remove(unorderedPart);
                 _context.SaveChanges();
             }
-
-            //var viewModel = new ReceivngFormViewModel
-            //{
-            //    UnorderedParts = _context.UnorderedPurchaseItemCarts.Where(u => u.PurchaseOrderNumber == poNumber)
-            //};
-
-            //return PartialView("_UnorderedPartsDetail", viewModel);
         }
         [HttpPost]
         public ActionResult Receive(ReceivngFormViewModel model)
@@ -168,5 +157,29 @@ namespace eBikes.Controllers
                 return PartialView("_OrderDetails", model);
             }
         }
+
+        [HttpPost]
+        public ActionResult ForceCloser(ReceivngFormViewModel model)
+        {
+            try
+            {
+                ReceivingOrderBLL sysmgr = new ReceivingOrderBLL();
+                PurchaseOrder purchaseOrder = new PurchaseOrder
+                {
+                    PurchaseOrderNumber = model.PO,
+                    Closed = true,
+                    Notes = model.CloserReason
+
+                };
+                sysmgr.Update_ClosePO(purchaseOrder, model.ReceivedOrderDetails);
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", e.Message);
+                return PartialView("_OrderDetails", model);
+            }
+        }
     }
+
 }

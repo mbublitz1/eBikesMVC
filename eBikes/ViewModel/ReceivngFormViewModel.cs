@@ -20,6 +20,8 @@ namespace eBikes.ViewModel
 
         public string ErrorMessage { get; set; }
 
+        public string CloserReason { get; set; }
+
         public PurchaseOrder PurchaseOrder { get; set; }
 
         public UnorderedParts Parts { get; set; }

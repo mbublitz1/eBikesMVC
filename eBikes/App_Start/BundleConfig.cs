@@ -12,6 +12,7 @@ namespace eBikes
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/datatables/jquery.datatables.js",
+                        "~/Scripts/bootbox.js",
                         "~/Scripts/datatables/datatables.bootstrap.js",
                         "~/Scripts/datatables/jquery.bootstrap.js",
                         "~/Scripts/jquery.unobtrusive-ajax.min.js",

@@ -45,3 +45,11 @@ textarea {
    float: left !important;
 }
 
+.text-size {
+    font-size: 18px;
+}
+
+.bottom-space {
+    margin-bottom: 1rem;
+}
+
