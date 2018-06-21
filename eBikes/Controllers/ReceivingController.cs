@@ -159,25 +159,25 @@ namespace eBikes.Controllers
         }
 
         [HttpPost]
-        public ActionResult ForceCloser(ReceivngFormViewModel model)
+        public ActionResult ForceCloser(ReceivngFormViewModel viewModel)
         {
             try
             {
                 ReceivingOrderBLL sysmgr = new ReceivingOrderBLL();
                 PurchaseOrder purchaseOrder = new PurchaseOrder
                 {
-                    PurchaseOrderNumber = model.PO,
+                    PurchaseOrderNumber = viewModel.PO,
                     Closed = true,
-                    Notes = model.CloserReason
+                    Notes = viewModel.CloserReason
 
                 };
-                sysmgr.Update_ClosePO(purchaseOrder, model.ReceivedOrderDetails);
+                sysmgr.Update_ClosePO(purchaseOrder, viewModel.ReceivedOrderDetails);
                 return RedirectToAction("Index");
             }
             catch (Exception e)
             {
                 ModelState.AddModelError("", e.Message);
-                return PartialView("_OrderDetails", model);
+                return PartialView("_OrderDetails", viewModel);
             }
         }
     }
