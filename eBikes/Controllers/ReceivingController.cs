@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using eBike.DTO.POCO;
@@ -49,6 +50,7 @@ namespace eBikes.Controllers
         //Index action list all outstanding orders
         public ActionResult Index()
         {
+            ModelState.Clear();
             var orderList = _context.PurchaseOrders.Where(od =>
                 od.Closed == false && !String.IsNullOrEmpty(od.PurchaseOrderNumber.ToString()) && od.OrderDate != null).ToList();
 
@@ -90,6 +92,7 @@ namespace eBikes.Controllers
 
             return PartialView("_OrderDetails", viewModel);
         }
+
         [HttpPost]
 
         public ActionResult CreateUnorderedPart(ReceivngFormViewModel model)
@@ -161,6 +164,7 @@ namespace eBikes.Controllers
         [HttpPost]
         public ActionResult ForceCloser(ReceivngFormViewModel viewModel)
         {
+            var redirectURL = new UrlHelper(Request.RequestContext).Action("Index");
             try
             {
                 ReceivingOrderBLL sysmgr = new ReceivingOrderBLL();
@@ -172,7 +176,8 @@ namespace eBikes.Controllers
 
                 };
                 sysmgr.Update_ClosePO(purchaseOrder, viewModel.ReceivedOrderDetails);
-                return RedirectToAction("Index");
+
+                return Json( new { Url = redirectURL}, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {

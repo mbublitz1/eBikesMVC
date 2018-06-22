@@ -24,6 +24,9 @@
     </ul>
 </div>
 <div>
+    <h3 id="message" class="text-success"></h3>
+</div>
+<div>
     <table id="OrderList" class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -74,15 +77,6 @@
                 </div>
             </div>
         </div>
-        <div class="row col-md-12 bottom-space" style="padding-top: 1rem">
-            <button id="indexReceiveBtn" class="btn btn-primary" disabled>Receive</button>
-        </div>
-        <div class="row col-md-12 ">
-            <ul class="list-inline list-unstyled">
-                <li> @Html.TextBoxFor(t => t.CloserReason, new { @class = "form-control" })</li>
-                <li><button id="forceCloserBtn" type="submit" class="btn btn-primary" disabled>Force Closer</button></li>
-            </ul>
-        </div>
     </div>
 </div>
 
@@ -90,20 +84,18 @@
 {
     <script>
         $(document)
-            .ready(function() {
+            .ready(function () {
                 var tbl;
                 $(".viewOrder")
                     .on("click",
-                        function(e) {
+                        function (e) {
                             var button = $(this);
-                            $("#indexReceiveBtn").removeAttr('disabled');
-                            $("#forceCloserBtn").removeAttr('disabled');
                             $.ajax({
                                 type: "POST",
                                 url: "/Receiving/Details",
                                 datatype: "html",
                                 data: { "id": button.attr("data-ponumber") },
-                                success: function(data) {
+                                success: function (data) {
                                     $(".details").html(data);
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
@@ -112,9 +104,7 @@
                                         url: "/Receiving/GetUnorderedParts",
                                         datatype: "html",
                                         data: { "id": button.attr("data-ponumber") },
-                                        success: function(data) {
-                                            var orderButton = $(".js-Order");
-                                            orderButton.removeClass("invisible");
+                                        success: function (data) {
                                             tbl = $("#UnorderedDetail")
                                                 .DataTable({
                                                     "destroy": true,
@@ -147,7 +137,7 @@
                                                         },
                                                         {
                                                             data: "CartID",
-                                                            render: function(data) {
+                                                            render: function (data) {
                                                                 return "<button class='btn btn-danger js-delete' data-cart-id=" +
                                                                     data +
                                                                     ">Delete</button>";
@@ -167,7 +157,7 @@
 
                 $(".insertUnorderedPart")
                     .on("click",
-                        function(e) {
+                        function (e) {
                             var poNumber = $(".viewOrder").data("ponumber");
                             var description = $(".js-desc");
                             var vendorPart = $('.js-vendorpart');
@@ -190,7 +180,7 @@
                                     contentType: "application/json; charset=utf-8",
                                     datatype: "json",
                                     success:
-                                        function(data) {
+                                        function (data) {
                                             var orderButton = $(".js-Order");
                                             orderButton.removeClass("invisible");
                                             description.val("");
@@ -206,7 +196,7 @@
                 $("#UnorderedDetail")
                     .on("click",
                         ".js-delete",
-                        function(e) {
+                        function (e) {
                             var button = $(this);
                             var po = $(".viewOrder").data("ponumber");
                             $.ajax({
@@ -217,7 +207,7 @@
                                     "cartId": button.attr("data-cart-id"),
                                     "poNumber": po
                                 },
-                                success: function() {
+                                success: function () {
                                     tbl.row(button.parents("tr")).remove().draw();
                                     var orderButton = $(".js-Order");
                                     orderButton.removeClass("invisible");
@@ -226,60 +216,62 @@
                             e.preventDefault();
                         });
 
-                $('#indexReceiveBtn')
-                    .click(function() {
+                //Since this click will take place in partial view and is being
+                //loaded into page dynamically, select element on main form and then
+                //specify button id
+                $(".details").on("click", '#indexReceiveBtn', function() {
                         $.validator.unobtrusive.parse($("form"));
                         if (!$('#unorderedForm').valid())
                             return false;
                         $("#frmReceiveBtn").trigger('click');
                         return false;
-                    });
+                });
 
-                $("#forceCloserBtn")
-                    .click(function () {
-                        var poNumber = $(".viewOrder").data("ponumber");
-                        var closerReason = $("#CloserReason").val();
-                        var model = @Html.Raw(Json.Encode(Model));
+                //Since this click will take place in partial view and is being
+                //loaded into page dynamically, select element on main form and then
+                //specify button id
+                $(".details").on("click", "#forceCloserBtn", function () {
+                        var closeForm = $("#OrderForm");
                         $.ajax({
                             type: "POST",
                             url: '@Url.Action("ForceCloser", "Receiving")',
-                            data: JSON.stringify({ viewModel: model }),
-                            contentType: 'application/json; charset=utf-8',
+                            //data: JSON.stringify({ viewModel: model }),
                             dataType: "json",
-                            success: function(data) {
-                                console.log(data);
+                            data: closeForm.serialize(),
+                            success: function (data) {
+                                window.location.href = data.Url;
                             }
                         });
                     });
 
                 $("#viewOrderAuto")
-                    .click(function() {
+                    .click(function () {
                         AutoRunthrough.viewOrder();
                     });
 
                 $("#addRecItmAuto")
-                    .click(function() {
+                    .click(function () {
                         AutoRunthrough.addReceiveData();
                     });
 
                 $("#receiveAuto")
-                    .click(function() {
+                    .click(function () {
                         AutoRunthrough.receiveItem();
                     });
                 $("#unorderTabAuto")
-                    .click(function() {
+                    .click(function () {
                         AutoRunthrough.unorderedTab();
                     });
                 $("#addUnorderedAuto")
-                    .click(function() {
+                    .click(function () {
                         AutoRunthrough.addUnordered();
                     });
                 $("#insertUnorderedAuto")
-                    .click(function() {
+                    .click(function () {
                         AutoRunthrough.insertUOP();
                     });
                 $("#deleteUnorderAuto")
-                    .click(function() {
+                    .click(function () {
                         if (!tbl.data().count()) {
                             bootbox.alert("Can not demo this function, there are no records to delete");
                         } else {
@@ -288,15 +280,15 @@
                     });
             });
 
-        var AutoRunthrough = (function() {
+        var AutoRunthrough = (function () {
             return {
-                viewOrder: function() {
+                viewOrder: function () {
                     $("#addRecItmAuto").removeClass("disabled");
                     var btnRow = $("#OrderList tbody tr:first, td:nth-child(5) a");
                     if (typeof btnRow != 'undefined')
                         $("#OrderList tbody tr:first, td:nth-child(5) a").trigger('click');
                 },
-                addReceiveData: function() {
+                addReceiveData: function () {
                     var outstanding = $("#OrderDetail tbody tr:first td:nth-child(4)").text();
                     var receiving = $("#OrderDetail tbody tr:first td:nth-child(5) input");
                     var returning = $("#OrderDetail tbody tr:first td:nth-child(6) input");
@@ -307,15 +299,15 @@
                     reason.val("Defective parts");
                     $("#receiveAuto").removeClass("disabled");
                 },
-                receiveItem: function() {
+                receiveItem: function () {
                     $("#unorderTabAuto").removeClass("disabled");
                     $("#frmReceiveBtn").trigger('click');
                 },
-                unorderedTab: function() {
+                unorderedTab: function () {
                     $('.nav-tabs a[href="#unordered"]').tab('show');
                     $("#addUnorderedAuto").removeClass("disabled");
                 },
-                addUnordered: function() {
+                addUnordered: function () {
                     var description = $("#UnorderedPart_Description");
                     var partNumber = $("#UnorderedPart_VendorPartNumber");
                     var quanity = $("#UnorderedPart_Quantity");
@@ -326,11 +318,11 @@
 
                     $("#insertUnorderedAuto").removeClass("disabled");
                 },
-                insertUOP: function() {
+                insertUOP: function () {
                     $("#insertUOP").trigger("click");
                     $("#deleteUnorderAuto").removeClass("disabled");
                 },
-                deleteUOP: function() {
+                deleteUOP: function () {
                     var btnRow = $("#UnorderedDetail tbody tr:first, td:nth-child(4) button");
                     if (typeof btnRow != 'undefined')
                         $("#UnorderedDetail tbody tr:first, td:nth-child(4) button").trigger('click');
