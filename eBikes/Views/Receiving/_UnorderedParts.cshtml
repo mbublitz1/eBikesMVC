@@ -26,6 +26,7 @@
                     @Html.ValidationMessageFor(u => u.UnorderedPart.Quantity)
                 </li>
                 <li>
+                    @Html.HiddenFor(p => p.PO)
                     <a id="insertUOP" class="insertUnorderedPart" href="#">Insert</a>
                 </li>
             </ul>

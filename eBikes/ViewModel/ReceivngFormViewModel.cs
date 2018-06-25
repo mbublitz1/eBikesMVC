@@ -18,7 +18,7 @@ namespace eBikes.ViewModel
         [Display(Name = "Contact: ")]
         public string Contact { get; set; }
 
-        public string ErrorMessage { get; set; }
+        public string Message { get; set; }
 
         public string CloserReason { get; set; }
 

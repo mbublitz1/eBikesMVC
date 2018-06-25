@@ -5,6 +5,15 @@
         @{
             Html.RenderPartial("_Error");
         }
+        @{
+            if (TempData["success"] != null)
+            {
+                <div id="SuccessMessage" class="success">
+                    <h4 class="text-success">@Html.Encode(TempData["success"])</h4>
+                </div>
+
+            }
+        }
         <div class="form-group" style="padding-bottom: 2rem; padding-top: 2rem;">
             <ul class="orderInfo">
                 <li>

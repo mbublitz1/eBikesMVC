@@ -26,27 +26,6 @@ namespace eBikes.Controllers
             _context.Dispose();
         }
 
-
-        //protected override void OnException(ExceptionContext filterContext)
-        //{
-        //    Exception ex = filterContext.Exception;
-        //    filterContext.ExceptionHandled = true;
-        //    var controllerName = (string)filterContext.RouteData.Values["controller"];
-        //    var actionName = (string)filterContext.RouteData.Values["action"];
-        //    var exp = new HandleErrorInfo(filterContext.Exception, controllerName, actionName);
-
-        //    ReceivngFormViewModel viewModel = new ReceivngFormViewModel
-        //    {
-        //        ErrorMessage = exp.Exception.Message.ToString()
-        //    };
-        //    filterContext.Result = new PartialViewResult()
-        //    {
-        //        ViewName = "_Error",
-        //        ViewData = new ViewDataDictionary(viewModel)
-        //    };
-
-        //}
-
         //Index action list all outstanding orders
         public ActionResult Index()
         {
@@ -135,11 +114,20 @@ namespace eBikes.Controllers
         {
             var unorderedPart = _context.UnorderedPurchaseItemCarts.Single(u => u.CartID == cartId);
 
-            if (unorderedPart != null)
+            try
             {
-                _context.UnorderedPurchaseItemCarts.Remove(unorderedPart);
-                _context.SaveChanges();
+                if (unorderedPart != null)
+                {
+                    _context.UnorderedPurchaseItemCarts.Remove(unorderedPart);
+                    _context.SaveChanges();
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+
         }
         [HttpPost]
         public ActionResult Receive(ReceivngFormViewModel model)
@@ -152,6 +140,7 @@ namespace eBikes.Controllers
                 int poDetailId = model.ReceivedOrderDetails[0].PurchaseOrderDetailId;
 
                 sysmgr.Add_ReceivedOrders(poId, poDetailId, model.ReceivedOrderDetails);
+                TempData["success"] = "Order has been updated successfully.";
                 return RedirectToAction("Details", new { id = model.PO });
             }
             catch (Exception e)
@@ -164,7 +153,6 @@ namespace eBikes.Controllers
         [HttpPost]
         public ActionResult ForceCloser(ReceivngFormViewModel viewModel)
         {
-            var redirectURL = new UrlHelper(Request.RequestContext).Action("Index");
             try
             {
                 ReceivingOrderBLL sysmgr = new ReceivingOrderBLL();
@@ -177,7 +165,7 @@ namespace eBikes.Controllers
                 };
                 sysmgr.Update_ClosePO(purchaseOrder, viewModel.ReceivedOrderDetails);
 
-                return Json( new { Url = redirectURL}, JsonRequestBehavior.AllowGet);
+                return Json(JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {

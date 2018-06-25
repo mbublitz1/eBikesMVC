@@ -5,75 +5,78 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="jumbotron">
-    <h1>Receiving</h1>
-</div>
-<h2>Receiving: Order Listing</h2>
-<div class="row col-md-12">
-    <h4>To navigate through this form and see how it function, please click the buttons in the sequence outlined.</h4>
-</div>
-<div class="row col-md-12">
-    <ul class="list-inline">
-        <li><button id="viewOrderAuto" class="btn btn-default btn-primary">1. View Order</button></li>
-        <li><button id="addRecItmAuto" class="btn btn-default disabled">2. Add Receive Items</button></li>
-        <li><button id="receiveAuto" class="btn btn-default disabled">3. Receive</button></li>
-        <li><button id="unorderTabAuto" class="btn btn-default disabled">5. Unordered Tab</button></li>
-        <li><button id="addUnorderedAuto" class="btn btn-default disabled">6. Add Unordered Item</button></li>
-        <li><button id="insertUnorderedAuto" class="btn btn-default disabled">7. Insert Unordered Item</button></li>
-        <li><button id="deleteUnorderAuto" class="btn btn-default disabled">8. Delete Item</button></li>
-    </ul>
-</div>
-<div>
-    <h3 id="message" class="text-success"></h3>
-</div>
-<div>
-    <table id="OrderList" class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Order</th>
-                <th>Order Date</th>
-                <th>Vendor</th>
-                <th>Contact</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var osOrder in Model.OutstandingOrders)
-            {
-                <tr>
-                    <td> @osOrder.PurchaseOrderNumber</td>
-                    <td>@string.Format("{0:MM/dd/yyyy}", osOrder.OrderDate)</td>
-                    <td>@osOrder.Vendor.VendorName</td>
-                    <td>@osOrder.Vendor.Phone</td>
-                    <td><a class="viewOrder" href="#" data-ponumber=@osOrder.PurchaseOrderNumber>View Order</a></td>
-                    @*<td>@Html.ActionLink("View Order", "Details", "Receiving", new { id = osOrder.PurchaseOrderNumber }, null)</td>*@
-                </tr>
-            }
-
-        </tbody>
-    </table>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <!--Nav tabs-->
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#receiving" data-toggle="tab">Receiving</a></li>
-            <li><a href="#unordered" data-toggle="tab">Unordered</a></li>
+<div id="wrapper">
+    <div class="jumbotron">
+        <h1>Receiving</h1>
+    </div>
+    <h2>Receiving: Order Listing</h2>
+    <div class="row col-md-12">
+        <h4>To navigate through this form and see how it function, please click the buttons in the sequence outlined.</h4>
+    </div>
+    <div class="row col-md-12">
+        <ul class="list-inline">
+            <li><button id="viewOrderAuto" class="btn btn-default btn-primary">1. View Order</button></li>
+            <li><button id="addRecItmAuto" class="btn btn-default disabled">2. Enter Items</button></li>
+            <li><button id="receiveAuto" class="btn btn-default disabled">3. Receive</button></li>
+            <li><button id="unorderTabAuto" class="btn btn-default disabled">5. Unordered Tab</button></li>
+            <li><button id="addUnorderedAuto" class="btn btn-default disabled">6. Enter Item</button></li>
+            <li><button id="insertUnorderedAuto" class="btn btn-default disabled">7. Insert Unordered Item</button></li>
+            <li><button id="deleteUnorderAuto" class="btn btn-default disabled">8. Delete</button></li>
+            <li><button id="finish" class="btn btn-default disabled">9. Finish</button></li>
         </ul>
-        @*Tab panes one for each tab*@
-        <div id="tabs" class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="receiving">
-                <div class="row form-inline col-md-12 details js-Order invisible">
-                    @Html.Partial("_OrderDetails", Model)
+    </div>
+    <div>
+        <h3 id="message" class="text-success"></h3>
+    </div>
+    <div>
+        <table id="OrderList" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Order Date</th>
+                    <th>Vendor</th>
+                    <th>Contact</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var osOrder in Model.OutstandingOrders)
+            {
+                    <tr>
+                        <td> @osOrder.PurchaseOrderNumber</td>
+                        <td>@string.Format("{0:MM/dd/yyyy}", osOrder.OrderDate)</td>
+                        <td>@osOrder.Vendor.VendorName</td>
+                        <td>@osOrder.Vendor.Phone</td>
+                        <td><a class="viewOrder" href="#" data-ponumber=@osOrder.PurchaseOrderNumber>View Order</a></td>
+                        @*<td>@Html.ActionLink("View Order", "Details", "Receiving", new { id = osOrder.PurchaseOrderNumber }, null)</td>*@
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <!--Nav tabs-->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#receiving" data-toggle="tab">Receiving</a></li>
+                <li><a href="#unordered" data-toggle="tab">Unordered</a></li>
+            </ul>
+            @*Tab panes one for each tab*@
+            <div id="tabs" class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="receiving">
+                    <div class="row form-inline col-md-12 details js-Order invisible">
+                        @Html.Partial("_OrderDetails", Model)
+                    </div>
                 </div>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="unordered">
-                <div class="col-md-12 js-Order invisible">
-                    @Html.Partial("_UnorderedParts", Model)
-                </div>
-                <div class="col-md-12 js-Order invisible">
-                    @Html.Partial("_UnorderedPartsDetail", Model)
+                <div role="tabpanel" class="tab-pane" id="unordered">
+                    <div class="col-md-12 js-Order invisible">
+                        @Html.Partial("_UnorderedParts", Model)
+                    </div>
+                    <div class="col-md-12 js-Order invisible">
+                        @Html.Partial("_UnorderedPartsDetail", Model)
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,255 +85,8 @@
 
 @section scripts
 {
-    <script>
-        $(document)
-            .ready(function () {
-                var tbl;
-                $(".viewOrder")
-                    .on("click",
-                        function (e) {
-                            var button = $(this);
-                            $.ajax({
-                                type: "POST",
-                                url: "/Receiving/Details",
-                                datatype: "html",
-                                data: { "id": button.attr("data-ponumber") },
-                                success: function (data) {
-                                    $(".details").html(data);
-                                    var orderButton = $(".js-Order");
-                                    orderButton.removeClass("invisible");
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "/Receiving/GetUnorderedParts",
-                                        datatype: "html",
-                                        data: { "id": button.attr("data-ponumber") },
-                                        success: function (data) {
-                                            tbl = $("#UnorderedDetail")
-                                                .DataTable({
-                                                    "destroy": true,
-                                                    "searching": false,
-                                                    "ordering": false,
-                                                    "lengthChange": false,
-                                                    "pagingType": "full_numbers",
-                                                    "paging": true,
-                                                    "lengthMenu": [10, 25, 50, 75, 100],
-                                                    ajax: {
-                                                        url: "/Receiving/GetUnorderedParts",
-                                                        data: { "id": button.attr("data-ponumber") },
-                                                        datasrc: ""
-                                                    },
-                                                    "columnDefs": [
-                                                        {
-                                                            targets: -1,
-                                                            className: 'dt-body-center'
-                                                        }
-                                                    ],
-                                                    columns: [
-                                                        {
-                                                            data: "Description"
-                                                        },
-                                                        {
-                                                            data: "VendorPartNumber"
-                                                        },
-                                                        {
-                                                            data: "Quantity"
-                                                        },
-                                                        {
-                                                            data: "CartID",
-                                                            render: function (data) {
-                                                                return "<button class='btn btn-danger js-delete' data-cart-id=" +
-                                                                    data +
-                                                                    ">Delete</button>";
-                                                            }
-                                                        }
-                                                    ] //EOColumns
-                                                }); //EODataTable
-
-                                        } //EOSuccess
-                                    }); //EOInnerAjax
-
-                                } //EOOuterSuccess
-                            }); //EOInitialAjax
-                            e.preventDefault();
-                        });
-
-
-                $(".insertUnorderedPart")
-                    .on("click",
-                        function (e) {
-                            var poNumber = $(".viewOrder").data("ponumber");
-                            var description = $(".js-desc");
-                            var vendorPart = $('.js-vendorpart');
-                            var quantity = $('.js-qty');
-                            var formdata = {};
-
-                            formdata.PurchaseOrderNumber = poNumber;
-                            formdata.Description = description.val();
-                            formdata.VendorPartNumber = vendorPart.val();
-                            formdata.Quantity = quantity.val();
-
-                            //if (!$('#unorderedForm').valid())
-                            //    return false;
-
-                            if ($('#unorderedForm').valid()) {
-                                $.ajax({
-                                    url: "/Receiving/CreateUnorderedPart/",
-                                    type: "POST",
-                                    data: '{unorderedPart: ' + JSON.stringify(formdata) + '}',
-                                    contentType: "application/json; charset=utf-8",
-                                    datatype: "json",
-                                    success:
-                                        function (data) {
-                                            var orderButton = $(".js-Order");
-                                            orderButton.removeClass("invisible");
-                                            description.val("");
-                                            vendorPart.val("");
-                                            quantity.val("");
-                                            tbl.ajax.reload();
-                                        } //EOSuccess
-                                }); //EOAjax
-                            }
-                            e.preventDefault();
-                        });
-
-                $("#UnorderedDetail")
-                    .on("click",
-                        ".js-delete",
-                        function (e) {
-                            var button = $(this);
-                            var po = $(".viewOrder").data("ponumber");
-                            $.ajax({
-                                type: "POST",
-                                url: '@Url.Action("Delete", "Receiving")',
-                                datatype: "html",
-                                data: {
-                                    "cartId": button.attr("data-cart-id"),
-                                    "poNumber": po
-                                },
-                                success: function () {
-                                    tbl.row(button.parents("tr")).remove().draw();
-                                    var orderButton = $(".js-Order");
-                                    orderButton.removeClass("invisible");
-                                }
-                            });
-                            e.preventDefault();
-                        });
-
-                //Since this click will take place in partial view and is being
-                //loaded into page dynamically, select element on main form and then
-                //specify button id
-                $(".details").on("click", '#indexReceiveBtn', function() {
-                        $.validator.unobtrusive.parse($("form"));
-                        if (!$('#unorderedForm').valid())
-                            return false;
-                        $("#frmReceiveBtn").trigger('click');
-                        return false;
-                });
-
-                //Since this click will take place in partial view and is being
-                //loaded into page dynamically, select element on main form and then
-                //specify button id
-                $(".details").on("click", "#forceCloserBtn", function () {
-                        var closeForm = $("#OrderForm");
-                        $.ajax({
-                            type: "POST",
-                            url: '@Url.Action("ForceCloser", "Receiving")',
-                            //data: JSON.stringify({ viewModel: model }),
-                            dataType: "json",
-                            data: closeForm.serialize(),
-                            success: function (data) {
-                                window.location.href = data.Url;
-                            }
-                        });
-                    });
-
-                $("#viewOrderAuto")
-                    .click(function () {
-                        AutoRunthrough.viewOrder();
-                    });
-
-                $("#addRecItmAuto")
-                    .click(function () {
-                        AutoRunthrough.addReceiveData();
-                    });
-
-                $("#receiveAuto")
-                    .click(function () {
-                        AutoRunthrough.receiveItem();
-                    });
-                $("#unorderTabAuto")
-                    .click(function () {
-                        AutoRunthrough.unorderedTab();
-                    });
-                $("#addUnorderedAuto")
-                    .click(function () {
-                        AutoRunthrough.addUnordered();
-                    });
-                $("#insertUnorderedAuto")
-                    .click(function () {
-                        AutoRunthrough.insertUOP();
-                    });
-                $("#deleteUnorderAuto")
-                    .click(function () {
-                        if (!tbl.data().count()) {
-                            bootbox.alert("Can not demo this function, there are no records to delete");
-                        } else {
-                            AutoRunthrough.deleteUOP();
-                        }
-                    });
-            });
-
-        var AutoRunthrough = (function () {
-            return {
-                viewOrder: function () {
-                    $("#addRecItmAuto").removeClass("disabled");
-                    var btnRow = $("#OrderList tbody tr:first, td:nth-child(5) a");
-                    if (typeof btnRow != 'undefined')
-                        $("#OrderList tbody tr:first, td:nth-child(5) a").trigger('click');
-                },
-                addReceiveData: function () {
-                    var outstanding = $("#OrderDetail tbody tr:first td:nth-child(4)").text();
-                    var receiving = $("#OrderDetail tbody tr:first td:nth-child(5) input");
-                    var returning = $("#OrderDetail tbody tr:first td:nth-child(6) input");
-                    var reason = $("#OrderDetail tbody tr:first td:nth-child(7) input");
-
-                    receiving.val(2);
-                    returning.val(20);
-                    reason.val("Defective parts");
-                    $("#receiveAuto").removeClass("disabled");
-                },
-                receiveItem: function () {
-                    $("#unorderTabAuto").removeClass("disabled");
-                    $("#frmReceiveBtn").trigger('click');
-                },
-                unorderedTab: function () {
-                    $('.nav-tabs a[href="#unordered"]').tab('show');
-                    $("#addUnorderedAuto").removeClass("disabled");
-                },
-                addUnordered: function () {
-                    var description = $("#UnorderedPart_Description");
-                    var partNumber = $("#UnorderedPart_VendorPartNumber");
-                    var quanity = $("#UnorderedPart_Quantity");
-
-                    description.val("Home speaker system");
-                    partNumber.val("HS2341-P");
-                    quanity.val(1);
-
-                    $("#insertUnorderedAuto").removeClass("disabled");
-                },
-                insertUOP: function () {
-                    $("#insertUOP").trigger("click");
-                    $("#deleteUnorderAuto").removeClass("disabled");
-                },
-                deleteUOP: function () {
-                    var btnRow = $("#UnorderedDetail tbody tr:first, td:nth-child(4) button");
-                    if (typeof btnRow != 'undefined')
-                        $("#UnorderedDetail tbody tr:first, td:nth-child(4) button").trigger('click');
-                }
-            }
-        })();
-    </script>
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/projscript")
     <script src="~/Scripts/jquery-validate.bootstrap-tooltip.min.js"></script>
 }
 
