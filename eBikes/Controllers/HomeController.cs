@@ -13,5 +13,10 @@ namespace eBikes.Controllers
             return View();
         }
 
+        public ActionResult RedirectHome()
+        {
+            return Redirect("http://www.mwbublitz.com");
+        }
+
     }
 }
