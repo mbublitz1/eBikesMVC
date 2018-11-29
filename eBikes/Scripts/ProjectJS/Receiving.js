@@ -9,7 +9,7 @@
                     $("#message").text("");
                     $.ajax({
                         type: "POST",
-                        url: "/ebikesmvc/Receiving/Details",
+                        url: "/Receiving/Details",
                         datatype: "html",
                         data: { "id": poNumber },
                         success: function (data) {
@@ -18,7 +18,7 @@
                             orderButton.removeClass("invisible");
                             $.ajax({
                                 type: "POST",
-                                url: "/ebikesmvc/Receiving/GetUnorderedParts",
+                                url: "/Receiving/GetUnorderedParts",
                                 datatype: "html",
                                 data: { "id": poNumber },
                                 success: function (data) {
@@ -32,7 +32,7 @@
                                             "paging": true,
                                             "lengthMenu": [10, 25, 50, 75, 100],
                                             ajax: {
-                                                url: "/ebikesmvc/Receiving/GetUnorderedParts",
+                                                url: "/Receiving/GetUnorderedParts",
                                                 data: { "id": poNumber },
                                                 datasrc: ""
                                             },
@@ -81,7 +81,7 @@
 
                     if ($('#unorderedForm').valid()) {
                         $.ajax({
-                            url: "/ebikesmvc/Receiving/CreateUnorderedPart/",
+                            url: "/Receiving/CreateUnorderedPart/",
                             type: "POST",
                             data: '{unorderedPart: ' + JSON.stringify(formdata) + '}',
                             contentType: "application/json; charset=utf-8",
@@ -107,7 +107,7 @@
                     var button = $(this);
                     $.ajax({
                         type: "POST",
-                        url: "/ebikesmvc/Receiving/Delete/",
+                        url: "/Receiving/Delete/",
                         datatype: "html",
                         data: {
                             "cartId": button.attr("data-cart-id"),
@@ -144,14 +144,14 @@
                 var closeForm = $("#OrderForm");
                 $.ajax({
                     type: "POST",
-                    url: "/ebikesmvc/Receiving/ForceCloser/",
+                    url: "/Receiving/ForceCloser/",
                     //data: JSON.stringify({ viewModel: model }),
                     dataType: "json",
                     data: closeForm.serialize(),
                     success: function (data) {
                         $.ajax({
                             type: "GET",
-                            url: "/ebikesmvc/Receiving/Index/",
+                            url: "/Receiving/Index/",
                             datatype: "html",
                             success: function (data) {
                                 $("#wrapper").html(data);

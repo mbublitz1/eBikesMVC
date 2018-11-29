@@ -1,4 +1,4 @@
-﻿@model eBikes.ViewModel.ReceivngFormViewModel
+﻿@model eBikes.Core.ViewModel.ReceivngFormViewModel
 
 @{
     ViewBag.Title = "Receiving";
@@ -47,7 +47,7 @@
                         <td>@string.Format("{0:MM/dd/yyyy}", osOrder.OrderDate)</td>
                         <td>@osOrder.Vendor.VendorName</td>
                         <td>@osOrder.Vendor.Phone</td>
-                        <td><a class="viewOrder" href="#" data-ponumber=@osOrder.PurchaseOrderNumber>View Order</a></td>
+                        <td><a class="viewOrder" href="#" data-ponumber=@osOrder.PurchaseOrderID>View Order</a></td>
                         @*<td>@Html.ActionLink("View Order", "Details", "Receiving", new { id = osOrder.PurchaseOrderNumber }, null)</td>*@
                     </tr>
                 }

@@ -1,6 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
-using eBikes.Models;
+using eBikes.Core.Models;
 
 namespace eBikes
 {

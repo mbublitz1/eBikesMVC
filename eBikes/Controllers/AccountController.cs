@@ -5,10 +5,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using eBikes.Core.Models;
+using eBikes.Persistence;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using eBikes.Models;
 
 namespace eBikes.Controllers
 {

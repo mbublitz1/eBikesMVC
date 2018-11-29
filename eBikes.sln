@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBikes", "eBikes\eBikes.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBikes.Tests", "eBikes.Tests\eBikes.Tests.csproj", "{B0446B93-4C6F-464A-ABC4-01D76F8F56C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBike.DTO", "eBike.DTO\eBike.DTO.csproj", "{5494B45E-7939-4C74-9168-2C41E543C9CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eBikes.Helpers", "Helpers\eBikes.Helpers.csproj", "{E4396F74-9AE5-4A51-BDA0-678568A84B81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{B0446B93-4C6F-464A-ABC4-01D76F8F56C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0446B93-4C6F-464A-ABC4-01D76F8F56C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0446B93-4C6F-464A-ABC4-01D76F8F56C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5494B45E-7939-4C74-9168-2C41E543C9CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5494B45E-7939-4C74-9168-2C41E543C9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5494B45E-7939-4C74-9168-2C41E543C9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5494B45E-7939-4C74-9168-2C41E543C9CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4396F74-9AE5-4A51-BDA0-678568A84B81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4396F74-9AE5-4A51-BDA0-678568A84B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4396F74-9AE5-4A51-BDA0-678568A84B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4396F74-9AE5-4A51-BDA0-678568A84B81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
